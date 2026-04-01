@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Igreja Batista em Bela Vista - Gestão de Membros e Eventos</title>
-    <!-- FullCalendar CSS e JS -->
+    <title>Igreja Batista em Bela Vista - Membros e Eventos</title>
+    <!-- FullCalendar -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <!-- Flatpickr -->
@@ -16,13 +16,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #FFF9E8 0%, #FFF2E0 100%);
@@ -30,7 +24,6 @@
             padding: 12px;
             min-height: 100vh;
         }
-
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -39,7 +32,6 @@
             box-shadow: 0 25px 50px -12px rgba(10,10,42,0.2);
             overflow: hidden;
         }
-
         .church-header {
             background: linear-gradient(135deg, #0A0A2A 0%, #12123A 50%, #1A1A4A 100%);
             padding: 1.8rem 1.5rem;
@@ -53,7 +45,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            line-height: 1.3;
         }
         .church-header .verse {
             font-family: 'Cormorant Garamond', serif;
@@ -62,97 +53,40 @@
             color: #FFD966;
             margin-top: 8px;
         }
-
-        .toast-notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0A0A2A;
-            color: #FFD966;
-            padding: 12px 24px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 1100;
-            animation: slideIn 0.3s ease;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 350px;
-        }
-        .toast-notification.success { background: #2c5f2d; color: white; }
-        .toast-notification.error { background: #c62828; color: white; }
-        .toast-notification.info { background: #FFA500; color: #0A0A2A; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .user-bar {
+        .admin-bar {
+            background: #FFF8F0;
+            padding: 10px 20px;
+            border-bottom: 1px solid #FFE0B5;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: #FFF8F0;
-            border-bottom: 1px solid #FFE0B5;
             flex-wrap: wrap;
             gap: 10px;
         }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .user-email {
-            font-size: 0.85rem;
-            color: #0A0A2A;
-            background: #FFEFE0;
-            padding: 6px 14px;
-            border-radius: 40px;
-        }
-        .login-btn, .logout-btn {
+        .admin-toggle {
             background: linear-gradient(135deg, #FFA500, #FF8C00);
+            color: #0A0A2A;
             border: none;
             padding: 8px 20px;
             border-radius: 40px;
-            color: #0A0A2A;
             font-weight: 600;
             cursor: pointer;
             font-size: 0.8rem;
-            width: auto;
-        }
-        .logout-btn { background: #DC2626; color: white; }
-        .admin-badge {
-            background: #FFA500;
-            color: #0A0A2A;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-        .share-link {
-            background: #FFF0E0;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.75rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer;
         }
-        .sync-status {
+        .admin-toggle.active {
+            background: #2c5f2d;
+            color: white;
+        }
+        .status {
             font-size: 0.7rem;
             color: #2c5f2d;
             background: #E8F5E9;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 40px;
         }
-        .sync-status.saving {
-            background: #FFF3E0;
-            color: #FF8C00;
-        }
-
         .tabs {
             display: flex;
             background: #FFF8F0;
@@ -162,7 +96,7 @@
             flex: 1;
             background: transparent;
             border: none;
-            padding: 1rem 0.5rem;
+            padding: 1rem;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
@@ -181,15 +115,9 @@
         .tab-content {
             display: none;
             padding: 1.5rem;
-            animation: fadeIn 0.3s ease;
             background: #FFFFFF;
         }
         .tab-content.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
         .card {
             background: #ffffff;
             border-radius: 24px;
@@ -207,58 +135,33 @@
             border-left: 4px solid #FFA500;
             padding-left: 16px;
         }
-        .card h3 i { color: #FF8C00; margin-right: 12px; }
-
-        .admin-panel {
-            background: linear-gradient(135deg, #FFF9F0, #FFF4E8);
-            border-radius: 20px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #FFD9A5;
+        .form-group { margin-bottom: 1rem; }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            color: #0A0A2A;
+            font-size: 0.85rem;
         }
-        .authorized-list { margin-top: 12px; }
-        .auth-email-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: white;
-            border-radius: 40px;
-            margin: 6px 0;
+        input, button {
+            border-radius: 60px;
+            border: 1px solid #FFE0B5;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            width: 100%;
         }
-        .remove-auth {
-            background: #FFEFEF;
-            color: #DC2626;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 40px;
+        button {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            color: #0A0A2A;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.7rem;
-            width: auto;
         }
-        .add-email-form {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .add-email-form input { flex: 1; min-width: 180px; }
-        .add-email-form button { width: auto; padding: 10px 20px; }
-
         .weekly-birthdays {
             background: linear-gradient(135deg, #FFF9F0 0%, #FFF4E8 100%);
             border-radius: 20px;
             padding: 1.2rem;
             margin-bottom: 1.5rem;
-        }
-        .weekly-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         .week-days {
             display: grid;
@@ -276,7 +179,6 @@
         .day-name { font-weight: 700; font-size: 0.7rem; color: #FF8C00; }
         .day-date { font-size: 0.85rem; font-weight: 600; margin: 4px 0; }
         .birthday-names { font-size: 0.65rem; color: #4B5563; }
-        
         .months-accordion .month-item {
             margin-bottom: 8px;
             border: 1px solid #FFE0B5;
@@ -313,83 +215,46 @@
             color: #999;
             font-style: italic;
         }
-        .form-group { margin-bottom: 1rem; }
-        input, button {
-            border-radius: 60px;
-            border: 1px solid #FFE0B5;
-            padding: 12px 16px;
-            font-size: 0.9rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-        button {
-            background: linear-gradient(135deg, #FFA500, #FF8C00);
-            color: #0A0A2A;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .event-form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .event-form-row .form-group { flex: 1; margin-bottom: 0; }
-        @media (max-width: 600px) {
-            .event-form-row { flex-direction: column; }
-            .week-days { gap: 4px; }
-            .user-bar { flex-direction: column; align-items: stretch; }
-        }
         .event-list { margin-top: 20px; background: #FFFBF7; border-radius: 20px; padding: 1rem; }
-        .event-item { display: flex; justify-content: space-between; align-items: center; background: white; margin: 8px 0; padding: 10px 16px; border-radius: 60px; border-left: 4px solid #FFA500; }
-        .delete-event { background: none; border: none; color: #DC2626; cursor: pointer; padding: 6px 12px; }
+        .event-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: white; 
+            margin: 8px 0; 
+            padding: 10px 16px; 
+            border-radius: 60px; 
+            border-left: 4px solid #FFA500;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #DC2626;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px 10px;
+            width: auto;
+        }
+        #calendar { max-width: 100%; background: white; border-radius: 20px; }
         footer { text-align: center; padding: 1rem; font-size: 0.75rem; color: #FF8C00; background: #FFFBF7; border-top: 1px solid #FFEFE0; }
-        
-        .modal-overlay {
+        @media (max-width: 600px) {
+            .week-days { gap: 4px; }
+            .tab-btn span { display: none; }
+        }
+        .toast {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10,10,42,0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
+            bottom: 20px;
+            right: 20px;
+            background: #0A0A2A;
+            color: #FFD966;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 2000;
+            animation: slideIn 0.3s;
         }
-        .login-modal, .confirm-modal {
-            background: white;
-            border-radius: 28px;
-            max-width: 400px;
-            width: 100%;
-            padding: 1.8rem;
-            border-top: 5px solid #FFA500;
-        }
-        .login-modal h3, .confirm-modal h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .login-modal input { margin-bottom: 12px; }
-        .confirm-modal .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 1rem;
-        }
-        .modal-buttons button { width: auto; padding: 10px 20px; }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #FF8C00;
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -400,355 +265,215 @@
         <div class="verse">“Alegrei-me quando me disseram: Vamos à casa do Senhor”</div>
     </div>
 
-    <div class="user-bar">
-        <div class="user-info">
-            <div class="user-email" id="userEmailDisplay">Não autenticado</div>
-            <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
-            <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Sair</button>
-            <span id="adminBadge" class="admin-badge" style="display:none;">👑 Administradora</span>
-            <span id="syncStatus" class="sync-status"><i class="fas fa-cloud-upload-alt"></i> Sincronizado</span>
+    <div class="admin-bar">
+        <div class="status" id="statusMsg">
+            <i class="fas fa-cloud"></i> Carregando...
         </div>
-        <div class="share-link" id="shareLinkBtn">
-            <i class="fas fa-share-alt"></i> Compartilhar Link
-        </div>
+        <button class="admin-toggle" id="adminToggleBtn">
+            <i class="fas fa-lock"></i> Modo Administrador
+        </button>
     </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="membersTab"><i class="fas fa-birthday-cake"></i> <span>Aniversários</span></button>
         <button class="tab-btn" data-tab="eventsTab"><i class="fas fa-calendar-alt"></i> <span>Eventos</span></button>
-        <button class="tab-btn" id="adminTabBtn" data-tab="adminTab" style="display:none;"><i class="fas fa-user-shield"></i> <span>Admin</span></button>
     </div>
 
+    <!-- ABA MEMBROS -->
     <div id="membersTab" class="tab-content active">
-        <div id="membersEditArea">
-            <div class="card" id="addMemberCard">
-                <h3><i class="fas fa-user-plus"></i> Adicionar Membro</h3>
+        <div id="adminMembersPanel" style="display: none;">
+            <div class="card">
+                <h3><i class="fas fa-user-plus"></i> Adicionar Novo Membro</h3>
                 <div class="form-group">
                     <label>Nome Completo</label>
-                    <input type="text" id="memberName" placeholder="Digite o nome completo">
+                    <input type="text" id="newMemberName" placeholder="Digite o nome completo">
                 </div>
                 <div class="form-group">
                     <label>Data de Aniversário</label>
-                    <input type="date" id="memberBirthday">
+                    <input type="date" id="newMemberBirthday">
                 </div>
-                <button id="addMemberBtn"><i class="fas fa-save"></i> Salvar Membro</button>
+                <button id="saveMemberBtn"><i class="fas fa-save"></i> Adicionar Membro</button>
             </div>
         </div>
+        
         <div class="weekly-birthdays">
             <div class="weekly-title"><i class="fas fa-calendar-week"></i> Aniversariantes da Semana</div>
             <div class="week-days" id="weekDaysContainer"></div>
         </div>
+        
         <div class="card">
             <h3><i class="fas fa-calendar-alt"></i> Aniversariantes por Mês</h3>
             <div class="months-accordion" id="monthsAccordion"></div>
         </div>
     </div>
 
+    <!-- ABA EVENTOS -->
     <div id="eventsTab" class="tab-content">
-        <div id="eventsEditArea">
-            <div class="card" id="addEventCard">
-                <h3><i class="fas fa-calendar-plus"></i> Adicionar Evento</h3>
-                <div class="event-form-row">
-                    <div class="form-group"><label>Título</label><input type="text" id="eventTitle" placeholder="Ex: Culto, Encontro, Batismo"></div>
-                    <div class="form-group"><label>Data e Hora</label><input type="text" id="eventDateTime" placeholder="Selecione data/hora"></div>
-                    <div class="form-group"><label>Cor</label><input type="color" id="eventColor" value="#FFA500"></div>
-                    <button id="addEventBtn"><i class="fas fa-plus-circle"></i> Adicionar</button>
+        <div id="adminEventsPanel" style="display: none;">
+            <div class="card">
+                <h3><i class="fas fa-calendar-plus"></i> Adicionar Novo Evento</h3>
+                <div class="form-group">
+                    <label>Título do Evento</label>
+                    <input type="text" id="newEventTitle" placeholder="Ex: Culto de Louvor">
                 </div>
+                <div class="form-group">
+                    <label>Data e Hora</label>
+                    <input type="text" id="newEventDateTime" placeholder="Selecione data e hora">
+                </div>
+                <div class="form-group">
+                    <label>Cor do Evento</label>
+                    <input type="color" id="newEventColor" value="#FFA500">
+                </div>
+                <button id="saveEventBtn"><i class="fas fa-save"></i> Adicionar Evento</button>
             </div>
         </div>
-        <div class="card"><h3><i class="fas fa-calendar-week"></i> Calendário de Eventos</h3><div id="calendar"></div></div>
-        <div class="event-list"><h4><i class="fas fa-list"></i> Próximos Eventos</h4><div id="upcomingEventsList"></div></div>
-    </div>
-
-    <div id="adminTab" class="tab-content">
+        
         <div class="card">
-            <h3><i class="fas fa-user-shield"></i> Gerenciar Acessos</h3>
-            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados. <strong>Todos os dados são compartilhados!</strong></p>
-            <div class="admin-panel">
-                <h4><i class="fas fa-envelope"></i> Emails Autorizados para Edição</h4>
-                <div id="authorizedEmailsList" class="authorized-list"></div>
-                <div class="add-email-form">
-                    <input type="email" id="newAuthEmail" placeholder="Email@exemplo.com">
-                    <button id="addAuthEmailBtn"><i class="fas fa-plus"></i> Autorizar</button>
-                </div>
-            </div>
-            <div class="admin-panel">
-                <h4><i class="fas fa-info-circle"></i> Como funciona</h4>
-                <p style="font-size: 0.85rem; line-height: 1.6;">
-                🔐 <strong>Administradora:</strong> nascimentonerisamannda@gmail.com (senha: 152926)<br>
-                👑 Você tem acesso total e pode autorizar outros emails.<br>
-                📧 Emails autorizados podem <strong>adicionar, editar e excluir</strong> membros e eventos.<br>
-                🌐 <strong>TODOS os dados são compartilhados!</strong> Os dados ficam salvos no arquivo dados.json no GitHub.<br>
-                🔗 Use o botão "Compartilhar Link" para enviar o acesso.
-                </p>
-            </div>
+            <h3><i class="fas fa-calendar-week"></i> Calendário de Eventos</h3>
+            <div id="calendar"></div>
+        </div>
+        
+        <div class="event-list">
+            <h4><i class="fas fa-list"></i> Próximos Eventos</h4>
+            <div id="upcomingEventsList"></div>
         </div>
     </div>
-    <footer>Igreja Batista em Bela Vista • Dados compartilhados em tempo real com todos</footer>
+    
+    <footer>Igreja Batista em Bela Vista • Dados compartilhados em nuvem</footer>
 </div>
 
 <script>
-    // ==================== CONFIGURAÇÃO ====================
+    // ==================== CONFIGURAÇÃO JSONBIN.IO ====================
+    // COLOQUE AQUI SEU BIN ID E API KEY DO JSONBIN.IO
+    const JSONBIN_BIN_ID = "69cd98c1856a682189ef2e58";  // ← COLE SEU BIN ID AQUI!
+    const JSONBIN_API_KEY = "$2a$10$FluV1M5VdMVQCkZA2N/IdO7CgST/wwxqpkg6D1mN5bmAWUiuBe9nu";  // ← COLE SUA API KEY AQUI!
+    
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+    
+    // ==================== CONFIGURAÇÃO ADMIN ====================
     const ADMIN_EMAIL = "nascimentonerisamannda@gmail.com";
     const ADMIN_PASSWORD = "152926";
-    const STORAGE_PREFERENCES = "ibv_delete_preferences";
-    
-    // URL do arquivo JSON no GitHub (AJUSTE ESTA URL!)
-    // Substitua "SEU-USUARIO" e "SEU-REPOSITORIO" pelos seus dados
-    const GITHUB_USERNAME = "nerisamanda"; // Seu nome de usuário do GitHub
-    const GITHUB_REPO = "igreja-batista-bela-vista"; // Nome do seu repositório
-    const JSON_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/dados.json`;
-    const JSON_SAVE_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/dados.json`;
     
     let currentUser = null;
-    let authorizedEmails = [];
     let members = [];
     let events = [];
     let calendarInstance = null;
     let flatpickrInstance = null;
-    let deletePreferences = { member: false, event: false };
-    let githubToken = null; // Será solicitado quando necessário
     
-    // ==================== FUNÇÕES DO GITHUB ====================
-    async function loadDataFromGitHub() {
-        try {
-            const response = await fetch(JSON_URL);
-            if (response.ok) {
-                const data = await response.json();
-                members = data.members || [];
-                events = data.events || [];
-                authorizedEmails = data.authorizedEmails || [];
-                updateSyncStatus(true, "Sincronizado");
-                return true;
-            } else {
-                // Arquivo não existe, criar padrão
-                members = [];
-                events = [];
-                authorizedEmails = [];
-                updateSyncStatus(false, "Arquivo não encontrado");
-                return false;
-            }
-        } catch (error) {
-            console.error("Erro ao carregar:", error);
-            updateSyncStatus(false, "Erro ao carregar");
-            return false;
-        }
-    }
-    
-    async function saveDataToGitHub() {
-        if (!githubToken) {
-            // Solicitar token do GitHub
-            const token = prompt("🔐 Para salvar os dados, você precisa de um Token do GitHub.\n\n1. Acesse: https://github.com/settings/tokens\n2. Clique em 'Generate new token (classic)'\n3. Dê um nome e marque 'repo'\n4. Copie o token e cole aqui\n\nToken:");
-            if (!token) {
-                showToast("❌ Token não fornecido. Dados não foram salvos!", "error");
-                return false;
-            }
-            githubToken = token;
-        }
-        
-        try {
-            // Primeiro, obter o SHA do arquivo atual
-            let sha = null;
-            const fileResponse = await fetch(JSON_SAVE_URL, {
-                headers: { 'Authorization': `token ${githubToken}` }
-            });
-            if (fileResponse.ok) {
-                const fileData = await fileResponse.json();
-                sha = fileData.sha;
-            }
-            
-            // Preparar o conteúdo
-            const dataToSave = {
-                members: members,
-                events: events,
-                authorizedEmails: authorizedEmails
-            };
-            const content = btoa(unescape(encodeURIComponent(JSON.stringify(dataToSave, null, 2))));
-            
-            // Enviar para o GitHub
-            const response = await fetch(JSON_SAVE_URL, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${githubToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: `Atualização do sistema - ${new Date().toLocaleString()}`,
-                    content: content,
-                    sha: sha
-                })
-            });
-            
-            if (response.ok) {
-                updateSyncStatus(true, "Salvo!");
-                showToast("✅ Dados salvos no GitHub! Todos verão as alterações.", "success");
-                return true;
-            } else {
-                const error = await response.json();
-                showToast("❌ Erro ao salvar: " + (error.message || "Token inválido?"), "error");
-                return false;
-            }
-        } catch (error) {
-            console.error("Erro ao salvar:", error);
-            showToast("❌ Erro ao salvar dados", "error");
-            return false;
-        }
-    }
-    
-    function updateSyncStatus(success, message) {
-        const statusEl = document.getElementById('syncStatus');
-        if (statusEl) {
-            if (success) {
-                statusEl.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> ${message}`;
-                statusEl.style.background = '#E8F5E9';
-                statusEl.style.color = '#2c5f2d';
-            } else {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-                statusEl.style.background = '#FFEBEE';
-                statusEl.style.color = '#c62828';
-            }
-        }
-    }
-    
-    function showToast(message, type = "info") {
+    function showToast(msg, type = "info") {
         const toast = document.createElement('div');
-        toast.className = `toast-notification ${type}`;
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${msg}`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
     
-    function showConfirmModal(options) {
-        return new Promise((resolve) => {
-            const modalDiv = document.createElement('div');
-            modalDiv.className = 'modal-overlay';
-            modalDiv.innerHTML = `
-                <div class="confirm-modal">
-                    <h3>${options.title}</h3>
-                    <p>${options.message}</p>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="dontAskAgainCheckbox">
-                        <label for="dontAskAgainCheckbox">Não perguntar novamente ao excluir ${options.type === 'member' ? 'membros' : 'eventos'}</label>
-                    </div>
-                    <div class="modal-buttons">
-                        <button id="modalCancelBtn" style="background:#E5E7EB; color:#0A0A2A;">Cancelar</button>
-                        <button id="modalConfirmBtn" style="background:#DC2626; color:white;">Excluir</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modalDiv);
-            
-            const confirmBtn = modalDiv.querySelector('#modalConfirmBtn');
-            const cancelBtn = modalDiv.querySelector('#modalCancelBtn');
-            const dontAsk = modalDiv.querySelector('#dontAskAgainCheckbox');
-            const close = () => modalDiv.remove();
-            
-            confirmBtn.onclick = () => {
-                if (dontAsk.checked) {
-                    if (options.type === 'member') deletePreferences.member = true;
-                    else deletePreferences.event = true;
-                    localStorage.setItem(STORAGE_PREFERENCES, JSON.stringify(deletePreferences));
+    async function loadData() {
+        try {
+            const response = await fetch(JSONBIN_URL + '/latest', {
+                headers: {
+                    'X-Master-Key': JSONBIN_API_KEY
                 }
-                close();
-                resolve(true);
-            };
-            cancelBtn.onclick = () => { close(); resolve(false); };
-            modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) { close(); resolve(false); } });
-        });
-    }
-    
-    async function requestDelete(type, id, name) {
-        const prefKey = type === 'member' ? 'member' : 'event';
-        const storedPrefs = localStorage.getItem(STORAGE_PREFERENCES);
-        if (storedPrefs) {
-            const prefs = JSON.parse(storedPrefs);
-            if (prefs[prefKey]) return true;
+            });
+            if (response.ok) {
+                const data = await response.json();
+                members = data.record.members || [];
+                events = data.record.events || [];
+                document.getElementById('statusMsg').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Dados carregados';
+                return true;
+            } else {
+                members = [];
+                events = [];
+                document.getElementById('statusMsg').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar';
+                return false;
+            }
+        } catch (error) {
+            document.getElementById('statusMsg').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro';
+            return false;
         }
-        return await showConfirmModal({
-            title: type === 'member' ? "Excluir Membro" : "Excluir Evento",
-            message: type === 'member' ? `Deseja excluir "${name}" da lista de membros?` : `Deseja remover o evento "${name}"?`,
-            type: type
-        });
     }
     
-    function canEdit() {
-        if (!currentUser) return false;
-        if (currentUser.isAdmin) return true;
-        return currentUser.isAuthorized;
+    async function saveToJSONBin() {
+        try {
+            const dataToSave = { members, events };
+            
+            const response = await fetch(JSONBIN_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_API_KEY
+                },
+                body: JSON.stringify(dataToSave)
+            });
+            
+            if (response.ok) {
+                showToast("✅ Dados salvos com sucesso! Todos verão as alterações.", "success");
+                document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> Salvo!';
+                setTimeout(() => {
+                    document.getElementById('statusMsg').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Dados carregados';
+                }, 3000);
+                return true;
+            } else {
+                showToast("❌ Erro ao salvar dados", "error");
+                return false;
+            }
+        } catch (error) {
+            showToast("❌ Erro ao salvar", "error");
+            return false;
+        }
     }
     
     function showLoginModal() {
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal-overlay';
+        modalDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:2000;';
         modalDiv.innerHTML = `
-            <div class="login-modal">
-                <h3><i class="fas fa-church"></i> Acesso ao Sistema</h3>
-                <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
-                <input type="password" id="loginPassword" placeholder="Senha" autocomplete="current-password">
-                <button id="loginConfirmBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
-                <button id="loginCancelBtn" style="background:#E5E7EB; color:#0A0A2A; margin-top:8px;">Cancelar</button>
-                <p style="font-size:0.7rem; margin-top:12px; text-align:center;">Dados compartilhados via GitHub</p>
+            <div style="background:white;border-radius:28px;max-width:350px;width:90%;padding:2rem;border-top:5px solid #FFA500;">
+                <h3 style="font-family:'Cormorant Garamond';margin-bottom:1rem;">Acesso Administrativo</h3>
+                <input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:12px;margin-bottom:12px;border-radius:40px;border:1px solid #FFE0B5;">
+                <input type="password" id="loginPassword" placeholder="Senha" style="width:100%;padding:12px;margin-bottom:12px;border-radius:40px;border:1px solid #FFE0B5;">
+                <button id="loginConfirm" style="width:100%;padding:12px;background:#FFA500;border:none;border-radius:40px;font-weight:600;">Entrar</button>
+                <button id="loginCancel" style="width:100%;padding:12px;margin-top:8px;background:#E5E7EB;border:none;border-radius:40px;">Cancelar</button>
             </div>
         `;
         document.body.appendChild(modalDiv);
         
-        const confirmBtn = modalDiv.querySelector('#loginConfirmBtn');
-        const cancelBtn = modalDiv.querySelector('#loginCancelBtn');
+        const confirmBtn = modalDiv.querySelector('#loginConfirm');
+        const cancelBtn = modalDiv.querySelector('#loginCancel');
         const emailInput = modalDiv.querySelector('#loginEmail');
         const passwordInput = modalDiv.querySelector('#loginPassword');
-        const closeModal = () => modalDiv.remove();
         
-        confirmBtn.onclick = async () => {
+        confirmBtn.onclick = () => {
             const email = emailInput.value.trim().toLowerCase();
             const password = passwordInput.value;
             
             if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-                currentUser = { email, isAdmin: true, isAuthorized: true };
-                closeModal();
-                updateUIForUser();
+                currentUser = { email, isAdmin: true };
+                modalDiv.remove();
+                showToast("✅ Modo Administrador ativado! Você pode editar os dados.", "success");
+                document.getElementById('adminToggleBtn').innerHTML = '<i class="fas fa-unlock-alt"></i> Administradora';
+                document.getElementById('adminToggleBtn').classList.add('active');
+                document.getElementById('adminMembersPanel').style.display = 'block';
+                document.getElementById('adminEventsPanel').style.display = 'block';
                 renderAll();
-                showToast("✅ Bem-vinda, Administradora! Você pode editar e salvar.", "success");
-            } else if (authorizedEmails.includes(email)) {
-                currentUser = { email, isAdmin: false, isAuthorized: true };
-                closeModal();
-                updateUIForUser();
-                renderAll();
-                showToast(`✅ Olá ${email}! Você tem permissão para editar.`, "success");
             } else {
-                showToast("❌ Acesso negado! Email não autorizado ou senha incorreta.", "error");
+                showToast("❌ Email ou senha incorretos!", "error");
             }
         };
-        cancelBtn.onclick = closeModal;
+        cancelBtn.onclick = () => modalDiv.remove();
     }
     
-    function logout() {
+    function logoutAdmin() {
         currentUser = null;
-        updateUIForUser();
+        showToast("🔓 Modo de visualização ativado", "info");
+        document.getElementById('adminToggleBtn').innerHTML = '<i class="fas fa-lock"></i> Modo Administrador';
+        document.getElementById('adminToggleBtn').classList.remove('active');
+        document.getElementById('adminMembersPanel').style.display = 'none';
+        document.getElementById('adminEventsPanel').style.display = 'none';
         renderAll();
-        showToast("🔓 Você saiu do sistema. Agora tem apenas acesso de visualização.", "info");
     }
     
-    function updateUIForUser() {
-        const canEditFlag = canEdit();
-        const btns = ['addMemberBtn', 'addEventBtn', 'addAuthEmailBtn'];
-        btns.forEach(id => { const btn = document.getElementById(id); if(btn) btn.disabled = !canEditFlag; });
-        const inputs = ['memberName', 'memberBirthday', 'eventTitle', 'eventDateTime'];
-        inputs.forEach(id => { const input = document.getElementById(id); if(input) input.disabled = !canEditFlag; });
-        const addCards = document.querySelectorAll('#addMemberCard, #addEventCard');
-        addCards.forEach(card => card.style.opacity = canEditFlag ? '1' : '0.6');
-        const adminTabBtn = document.getElementById('adminTabBtn');
-        adminTabBtn.style.display = (currentUser && currentUser.isAdmin) ? 'flex' : 'none';
-        document.getElementById('userEmailDisplay').innerHTML = currentUser ? currentUser.email : 'Não autenticado';
-        document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'block';
-        document.getElementById('logoutBtn').style.display = currentUser ? 'block' : 'none';
-        document.getElementById('adminBadge').style.display = (currentUser && currentUser.isAdmin) ? 'inline-block' : 'none';
-    }
-    
-    function shareLink() {
-        navigator.clipboard.writeText(window.location.href);
-        showToast("✅ Link copiado! Todos que acessarem verão os mesmos dados.", "success");
-    }
-    
+    // Renderizações
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     
@@ -779,13 +504,16 @@
         const weekData = getBirthdaysOfWeek();
         const hoje = new Date();
         const hojeStr = `${hoje.getDate()}/${hoje.getMonth()+1}`;
-        document.getElementById('weekDaysContainer').innerHTML = weekData.map(day => `
-            <div class="day-card ${day.dateStr === hojeStr ? 'highlight' : ''}">
-                <div class="day-name">${weekDays[day.dayOfWeek]}</div>
-                <div class="day-date">${day.dateStr}</div>
-                <div class="birthday-names">${day.birthdays.length ? '🎂 ' + day.birthdays.slice(0,2).join(', ') + (day.birthdays.length > 2 ? ` +${day.birthdays.length-2}` : '') : '—'}</div>
-            </div>
-        `).join('');
+        const container = document.getElementById('weekDaysContainer');
+        if (container) {
+            container.innerHTML = weekData.map(day => `
+                <div class="day-card ${day.dateStr === hojeStr ? 'highlight' : ''}">
+                    <div class="day-name">${weekDays[day.dayOfWeek]}</div>
+                    <div class="day-date">${day.dateStr}</div>
+                    <div class="birthday-names">${day.birthdays.length ? '🎂 ' + day.birthdays.slice(0,2).join(', ') + (day.birthdays.length > 2 ? ` +${day.birthdays.length-2}` : '') : '—'}</div>
+                </div>
+            `).join('');
+        }
     }
     
     function renderMembersByMonth() {
@@ -799,10 +527,9 @@
         
         const container = document.getElementById('monthsAccordion');
         if (!container) return;
-        const canEditFlag = canEdit();
         
         if (members.length === 0) {
-            container.innerHTML = `<div class="empty-message"><i class="fas fa-users"></i> Nenhum membro cadastrado. Adicione o primeiro membro acima!</div>`;
+            container.innerHTML = `<div class="empty-message"><i class="fas fa-users"></i> Nenhum membro cadastrado. Entre no modo administrador para adicionar.</div>`;
             return;
         }
         
@@ -818,7 +545,7 @@
                         ${monthMembers.length ? monthMembers.map(m => `
                             <div class="member-row">
                                 <span><i class="fas fa-user"></i> ${escapeHtml(m.name)}</span>
-                                <span>Dia ${m.day} ${canEditFlag ? `<button class="delete-memb" data-id="${m.id}" data-name="${escapeHtml(m.name)}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; font-size:0.7rem; width:auto; margin-left:10px;">Excluir</button>` : ''}</span>
+                                <span>Dia ${m.day} ${currentUser ? `<button class="delete-member" data-id="${m.id}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; border-radius:40px; border:none; margin-left:10px;">Excluir</button>` : ''}</span>
                             </div>
                         `).join('') : '<div style="padding:10px 0; color:#999;">Nenhum aniversariante</div>'}
                     </div>
@@ -833,54 +560,30 @@
             });
         });
         
-        if (canEditFlag) {
-            document.querySelectorAll('.delete-memb').forEach(btn => {
+        if (currentUser) {
+            document.querySelectorAll('.delete-member').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     const id = parseInt(btn.getAttribute('data-id'));
-                    const name = btn.getAttribute('data-name');
-                    const confirmed = await requestDelete('member', id, name);
-                    if (confirmed) {
+                    if (confirm("Tem certeza que deseja excluir este membro?")) {
                         members = members.filter(m => m.id !== id);
-                        await saveDataToGitHub();
+                        await saveToJSONBin();
                         renderAll();
-                        showToast(`🗑️ Membro "${name}" removido!`, "success");
                     }
                 });
             });
         }
     }
     
-    async function addMember(name, birthdayISO) {
-        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return false; }
-        if (!name?.trim()) { showToast("Informe o nome do membro", "error"); return false; }
-        members.push({ id: Date.now(), name: name.trim(), birthday: birthdayISO || null });
-        await saveDataToGitHub();
-        renderAll();
-        showToast(`✅ Membro "${name.trim()}" adicionado!`, "success");
-        return true;
-    }
-    
-    function refreshCalendarAndList() {
-        if (calendarInstance) {
-            calendarInstance.removeAllEvents();
-            if (events.length > 0) {
-                calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
-            }
-        }
-        renderUpcomingEvents();
-    }
-    
     function renderUpcomingEvents() {
         const container = document.getElementById('upcomingEventsList');
         if (!container) return;
         if (!events.length) { 
-            container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-alt"></i> Nenhum evento agendado. Adicione o primeiro evento acima!</div>';
+            container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-alt"></i> Nenhum evento agendado. Entre no modo administrador para adicionar.</div>';
             return; 
         }
         const now = new Date();
         const upcoming = events.map(ev => ({ ...ev, startDate: new Date(ev.start) })).filter(ev => ev.startDate >= now).sort((a,b) => a.startDate - b.startDate);
-        const canEditFlag = canEdit();
         
         if (upcoming.length === 0) {
             container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-check"></i> Nenhum evento futuro agendado</div>';
@@ -888,21 +591,18 @@
         }
         
         container.innerHTML = upcoming.map(ev => {
-            const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}" data-name="${escapeHtml(ev.title)}"><i class="fas fa-trash"></i></button>` : ''}</div>`;
+            const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit' });
+            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>📅 ${dataFormat}</small></div>${currentUser ? `<button class="delete-event" data-id="${ev.id}" style="background:none; border:none; color:#DC2626; cursor:pointer;"><i class="fas fa-trash"></i></button>` : ''}</div>`;
         }).join('');
         
-        if (canEditFlag) {
+        if (currentUser) {
             document.querySelectorAll('.delete-event').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const id = parseInt(btn.getAttribute('data-id'));
-                    const name = btn.getAttribute('data-name');
-                    const confirmed = await requestDelete('event', id, name);
-                    if (confirmed) {
+                    if (confirm("Tem certeza que deseja excluir este evento?")) {
                         events = events.filter(e => e.id !== id);
-                        await saveDataToGitHub();
+                        await saveToJSONBin();
                         renderAll();
-                        showToast(`🗑️ Evento "${name}" removido!`, "success");
                     }
                 });
             });
@@ -917,149 +617,143 @@
             locale: 'pt-br',
             headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' },
             buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana' },
-            events: events.length > 0 ? events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })) : [],
+            events: events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })),
             editable: false,
+            height: "auto",
             eventClick: async (info) => {
-                if (canEdit()) {
-                    const confirmed = await requestDelete('event', parseInt(info.event.id), info.event.title);
-                    if (confirmed) {
-                        const id = parseInt(info.event.id);
-                        events = events.filter(e => e.id !== id);
-                        await saveDataToGitHub();
-                        renderAll();
-                        showToast(`🗑️ Evento "${info.event.title}" removido!`, "success");
-                    }
+                if (currentUser && confirm(`Excluir evento "${info.event.title}"?`)) {
+                    const id = parseInt(info.event.id);
+                    events = events.filter(e => e.id !== id);
+                    await saveToJSONBin();
+                    renderAll();
                 }
-            },
-            height: "auto"
+            }
         });
         calendarInstance.render();
     }
     
-    async function addEvent(title, dateTimeISO, color) {
-        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return false; }
-        if (!title?.trim()) { showToast("Título do evento é obrigatório", "error"); return false; }
-        if (!dateTimeISO) { showToast("Selecione data e hora", "error"); return false; }
-        events.push({ id: Date.now(), title: title.trim(), start: dateTimeISO, color: color || "#FFA500" });
-        await saveDataToGitHub();
-        renderAll();
-        showToast(`✅ Evento "${title.trim()}" adicionado!`, "success");
-        return true;
-    }
-    
-    function renderAuthorizedEmails() {
-        const container = document.getElementById('authorizedEmailsList');
-        if (!container) return;
-        if (authorizedEmails.length === 0) {
-            container.innerHTML = '<div class="empty-message">Nenhum email autorizado ainda. Adicione o primeiro!</div>';
-            return;
-        }
-        container.innerHTML = authorizedEmails.map(email => `
-            <div class="auth-email-item">
-                <span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>
-                <button class="remove-auth" data-email="${email}">Remover</button>
-            </div>
-        `).join('');
-        document.querySelectorAll('.remove-auth').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const email = btn.getAttribute('data-email');
-                authorizedEmails = authorizedEmails.filter(e => e !== email);
-                await saveDataToGitHub();
-                renderAuthorizedEmails();
-                if (currentUser && currentUser.email === email && !currentUser.isAdmin) logout();
-                showToast(`📧 ${email} removido da lista`, "info");
-            });
-        });
-    }
-    
-    async function addAuthorizedEmail(email) {
-        if (!currentUser?.isAdmin) { showToast("Apenas a administradora pode autorizar emails", "error"); return; }
-        const normalized = email.trim().toLowerCase();
-        if (!normalized || !normalized.includes('@')) { showToast("Email inválido", "error"); return; }
-        if (normalized === ADMIN_EMAIL) { showToast("Este é o email da administradora", "error"); return; }
-        if (authorizedEmails.includes(normalized)) { showToast("Email já autorizado", "error"); return; }
-        authorizedEmails.push(normalized);
-        await saveDataToGitHub();
-        renderAuthorizedEmails();
-        showToast(`✅ ${normalized} agora pode editar!`, "success");
-    }
-    
-    async function renderAll() {
-        renderWeeklyCalendar();
-        renderMembersByMonth();
-        renderUpcomingEvents();
+    function refreshCalendar() {
         if (calendarInstance) {
             calendarInstance.removeAllEvents();
             if (events.length > 0) {
                 calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
             }
         }
-        renderAuthorizedEmails();
     }
     
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+    function escapeHtml(str) { 
+        if(!str) return ''; 
+        return str.replace(/[&<>]/g, function(m) { 
+            if(m === '&') return '&amp;'; 
+            if(m === '<') return '&lt;'; 
+            if(m === '>') return '&gt;'; 
+            return m; 
+        }); 
+    }
+    
+    async function renderAll() {
+        await loadData();
+        renderWeeklyCalendar();
+        renderMembersByMonth();
+        renderUpcomingEvents();
+        refreshCalendar();
+    }
+    
+    async function addMember() {
+        const name = document.getElementById('newMemberName').value;
+        const birthday = document.getElementById('newMemberBirthday').value;
+        
+        if (!name.trim()) {
+            showToast("Digite o nome do membro", "error");
+            return;
+        }
+        
+        const newId = Date.now();
+        members.push({ id: newId, name: name.trim(), birthday: birthday || null });
+        await saveToJSONBin();
+        
+        document.getElementById('newMemberName').value = '';
+        document.getElementById('newMemberBirthday').value = '';
+        await renderAll();
+        showToast("✅ Membro adicionado com sucesso!", "success");
+    }
+    
+    async function addEvent() {
+        const title = document.getElementById('newEventTitle').value;
+        const dateRaw = document.getElementById('newEventDateTime').value;
+        const color = document.getElementById('newEventColor').value;
+        
+        if (!title.trim()) {
+            showToast("Digite o título do evento", "error");
+            return;
+        }
+        if (!dateRaw) {
+            showToast("Selecione data e hora", "error");
+            return;
+        }
+        
+        let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
+        const valid = new Date(iso);
+        if (isNaN(valid.getTime())) {
+            showToast("Data inválida", "error");
+            return;
+        }
+        
+        const newId = Date.now();
+        events.push({ id: newId, title: title.trim(), start: valid.toISOString(), color: color || "#FFA500" });
+        await saveToJSONBin();
+        
+        document.getElementById('newEventTitle').value = '';
+        if (flatpickrInstance) flatpickrInstance.clear();
+        await renderAll();
+        showToast("✅ Evento adicionado com sucesso!", "success");
+    }
     
     async function init() {
-        // Carregar preferências de exclusão
-        const storedPrefs = localStorage.getItem(STORAGE_PREFERENCES);
-        if (storedPrefs) deletePreferences = JSON.parse(storedPrefs);
-        
-        // Carregar dados do GitHub
-        showToast("📥 Carregando dados compartilhados...", "info");
-        await loadDataFromGitHub();
-        
+        await renderAll();
         initCalendar();
-        renderAll();
         
-        document.getElementById('loginBtn').onclick = showLoginModal;
-        document.getElementById('logoutBtn').onclick = logout;
-        document.getElementById('shareLinkBtn').onclick = shareLink;
-        document.getElementById('addMemberBtn').onclick = async () => {
-            const name = document.getElementById('memberName').value;
-            const birthday = document.getElementById('memberBirthday').value;
-            if (await addMember(name, birthday)) {
-                document.getElementById('memberName').value = '';
-                document.getElementById('memberBirthday').value = '';
+        const dtInput = document.getElementById('newEventDateTime');
+        if (dtInput) {
+            flatpickrInstance = flatpickr(dtInput, { 
+                enableTime: true, 
+                dateFormat: "Y-m-d H:i", 
+                time_24hr: true, 
+                locale: "pt", 
+                defaultHour: 19 
+            });
+        }
+        
+        document.getElementById('adminToggleBtn').onclick = () => {
+            if (currentUser) {
+                logoutAdmin();
+            } else {
+                showLoginModal();
             }
         };
-        document.getElementById('addEventBtn').onclick = async () => {
-            const title = document.getElementById('eventTitle').value;
-            const dateRaw = document.getElementById('eventDateTime').value;
-            const color = document.getElementById('eventColor').value;
-            if (!dateRaw) { showToast("Selecione data e hora", "error"); return; }
-            let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
-            const valid = new Date(iso);
-            if (isNaN(valid.getTime())) { showToast("Data inválida", "error"); return; }
-            if (await addEvent(title, valid.toISOString(), color)) {
-                document.getElementById('eventTitle').value = '';
-                if (flatpickrInstance) flatpickrInstance.clear();
-            }
-        };
-        document.getElementById('addAuthEmailBtn').onclick = async () => {
-            const email = document.getElementById('newAuthEmail').value;
-            await addAuthorizedEmail(email);
-            document.getElementById('newAuthEmail').value = '';
-        };
         
-        const dtInput = document.getElementById('eventDateTime');
-        if (dtInput) flatpickrInstance = flatpickr(dtInput, { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, locale: "pt", defaultHour: 19 });
+        document.getElementById('saveMemberBtn').onclick = addMember;
+        document.getElementById('saveEventBtn').onclick = addEvent;
         
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-tab');
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => { c.classList.remove('active'); if(c.id === id) c.classList.add('active'); });
+                document.querySelectorAll('.tab-content').forEach(c => { 
+                    c.classList.remove('active'); 
+                    if(c.id === id) c.classList.add('active'); 
+                });
                 if (id === 'eventsTab' && calendarInstance) setTimeout(() => calendarInstance.updateSize(), 150);
             });
         });
         
-        updateUIForUser();
-        showToast("✅ Sistema carregado! Os dados são compartilhados com todos.", "success");
+        setInterval(async () => {
+            if (!currentUser) {
+                await renderAll();
+            }
+        }, 30000);
     }
-    
-    // AVISO IMPORTANTE
-    alert("⚠️ ATENÇÃO!\n\nPara que os dados sejam compartilhados, você precisa:\n\n1. Criar um Token do GitHub:\n   - Acesse: https://github.com/settings/tokens\n   - Clique em 'Generate new token (classic)'\n   - Marque a opção 'repo'\n   - Copie o token\n\n2. Quando for salvar, cole o token no prompt.\n\n3. Altere as variáveis GITHUB_USERNAME e GITHUB_REPO no código com seu usuário e nome do repositório.\n\nOs dados serão salvos no arquivo dados.json no seu repositório!");
     
     init();
 </script>
