@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
@@ -61,6 +64,41 @@
             font-style: italic;
             color: #FFD966;
             margin-top: 8px;
+        }
+
+        /* Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0A0A2A;
+            color: #FFD966;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1100;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 350px;
+        }
+        .toast-notification.success {
+            background: #2c5f2d;
+            color: white;
+        }
+        .toast-notification.error {
+            background: #c62828;
+            color: white;
+        }
+        .toast-notification.info {
+            background: #FFA500;
+            color: #0A0A2A;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .user-bar {
@@ -122,6 +160,13 @@
         }
         .share-link:hover {
             background: #FFE0C0;
+        }
+        .sync-status {
+            font-size: 0.7rem;
+            color: #2c5f2d;
+            background: #E8F5E9;
+            padding: 4px 10px;
+            border-radius: 40px;
         }
 
         .tabs {
@@ -306,10 +351,6 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-        .btn-danger {
-            background: #DC2626;
-            color: white;
-        }
         .event-form-row {
             display: flex;
             flex-wrap: wrap;
@@ -339,7 +380,7 @@
             z-index: 1000;
             padding: 16px;
         }
-        .modal-confirm {
+        .login-modal, .confirm-modal {
             background: white;
             border-radius: 28px;
             max-width: 400px;
@@ -347,36 +388,47 @@
             padding: 1.8rem;
             border-top: 5px solid #FFA500;
         }
-        .modal-confirm input {
-            width: 100%;
-            margin: 10px 0;
-        }
-        .login-modal {
-            background: white;
-            border-radius: 28px;
-            max-width: 380px;
-            width: 100%;
-            padding: 2rem;
-            border-top: 5px solid #FFA500;
-        }
-        .login-modal h3 {
+        .login-modal h3, .confirm-modal h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 1rem;
             text-align: center;
         }
         .login-modal input {
             margin-bottom: 12px;
         }
-        .login-modal button {
-            margin-top: 8px;
+        .confirm-modal .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .confirm-modal .checkbox-option input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .modal-buttons button {
+            width: auto;
+            padding: 10px 20px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #FF8C00;
         }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="church-header">
-        <h1>Igreja Batista em Bela Vista</h1>
+        <h1>Igreja Batista<br>em Bela Vista</h1>
         <div class="verse">“Alegrei-me quando me disseram: Vamos à casa do Senhor”</div>
     </div>
 
@@ -386,6 +438,7 @@
             <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
             <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Sair</button>
             <span id="adminBadge" class="admin-badge" style="display:none;">👑 Administradora</span>
+            <span id="syncStatus" class="sync-status"><i class="fas fa-cloud-upload-alt"></i> Sincronizado</span>
         </div>
         <div class="share-link" id="shareLinkBtn">
             <i class="fas fa-share-alt"></i> Compartilhar Link
@@ -398,7 +451,6 @@
         <button class="tab-btn" id="adminTabBtn" data-tab="adminTab" style="display:none;"><i class="fas fa-user-shield"></i> <span>Admin</span></button>
     </div>
 
-    <!-- ABA ANIVERSÁRIOS -->
     <div id="membersTab" class="tab-content active">
         <div id="membersEditArea">
             <div class="card" id="addMemberCard">
@@ -424,7 +476,6 @@
         </div>
     </div>
 
-    <!-- ABA EVENTOS -->
     <div id="eventsTab" class="tab-content">
         <div id="eventsEditArea">
             <div class="card" id="addEventCard">
@@ -441,11 +492,10 @@
         <div class="event-list"><h4><i class="fas fa-list"></i> Próximos Eventos</h4><div id="upcomingEventsList"></div></div>
     </div>
 
-    <!-- ABA ADMIN -->
     <div id="adminTab" class="tab-content">
         <div class="card">
             <h3><i class="fas fa-user-shield"></i> Gerenciar Acessos</h3>
-            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados da igreja. Somente você (administradora) pode gerenciar esta lista.</p>
+            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados. Todos os dados são compartilhados em tempo real!</p>
             <div class="admin-panel">
                 <h4><i class="fas fa-envelope"></i> Emails Autorizados para Edição</h4>
                 <div id="authorizedEmailsList" class="authorized-list"></div>
@@ -460,77 +510,194 @@
                 🔐 <strong>Administradora:</strong> nascimentonerisamannda@gmail.com (senha: 152926)<br>
                 👑 Você tem acesso total e pode autorizar outros emails.<br>
                 📧 Emails autorizados podem <strong>adicionar, editar e excluir</strong> membros e eventos.<br>
-                👀 Visitantes não autenticados ou com email não autorizado só podem <strong>visualizar</strong> os dados.<br>
-                🔗 Use o botão "Compartilhar Link" para enviar o acesso a qualquer pessoa.
+                🌐 <strong>TODOS os dados são compartilhados!</strong> Quando alguém adiciona um membro ou evento, TODOS veem em tempo real.<br>
+                🔗 Use o botão "Compartilhar Link" para enviar o acesso.
                 </p>
             </div>
         </div>
     </div>
-    <footer>Igreja Batista em Bela Vista • Compartilhe fé e celebração</footer>
+    <footer>Igreja Batista em Bela Vista • Dados compartilhados em tempo real com todos</footer>
 </div>
 
 <script>
-    // CONFIGURAÇÃO
+    // ==================== CONFIGURAÇÃO FIREBASE ====================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDEFAULT_PLACEHOLDER",
+        authDomain: "igreja-batista.firebaseapp.com",
+        databaseURL: "https://igreja-batista-default-rtdb.firebaseio.com",
+        projectId: "igreja-batista",
+        storageBucket: "igreja-batista.firebasestorage.app",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef123456"
+    };
+    
+    let useFirebase = false;
+    if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyDEFAULT_PLACEHOLDER") {
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            window.database = firebase.database();
+            useFirebase = true;
+        } catch(e) { console.warn("Firebase não configurado"); }
+    }
+    
+    // ==================== CONFIGURAÇÃO ====================
     const ADMIN_EMAIL = "nascimentonerisamannda@gmail.com";
     const ADMIN_PASSWORD = "152926";
-    const STORAGE_AUTH = "ibv_authorized_emails";
-    const STORAGE_MEMBERS = "ibv_members_data";
-    const STORAGE_EVENTS = "ibv_events_data";
-
+    const STORAGE_PREFERENCES = "ibv_delete_preferences";
+    
     let currentUser = null;
     let authorizedEmails = [];
     let members = [];
     let events = [];
     let calendarInstance = null;
     let flatpickrInstance = null;
-
-    // Carregar dados
-    function loadAuthorizedEmails() {
-        const stored = localStorage.getItem(STORAGE_AUTH);
+    let deletePreferences = { member: false, event: false };
+    
+    // Toast notification
+    function showToast(message, type = "info") {
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        let icon = type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️";
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+    
+    function loadDeletePreferences() {
+        const stored = localStorage.getItem(STORAGE_PREFERENCES);
         if (stored) {
-            authorizedEmails = JSON.parse(stored);
-        } else {
-            authorizedEmails = [];
-            saveAuthorizedEmails();
+            try {
+                const prefs = JSON.parse(stored);
+                deletePreferences.member = prefs.member === true;
+                deletePreferences.event = prefs.event === true;
+            } catch(e) {}
         }
     }
-    function saveAuthorizedEmails() { localStorage.setItem(STORAGE_AUTH, JSON.stringify(authorizedEmails)); }
-
-    function loadData() {
-        const storedMembers = localStorage.getItem(STORAGE_MEMBERS);
-        if (storedMembers) members = JSON.parse(storedMembers);
-        else {
-            members = [
-                { id: 1, name: "Ana Lúcia Mendes", birthday: "1975-05-20" },
-                { id: 2, name: "João Batista Silva", birthday: "1968-12-10" },
-                { id: 3, name: "Maria Clara Souza", birthday: "1995-03-25" },
-                { id: 4, name: "Rafael Oliveira", birthday: "2000-01-15" },
-                { id: 5, name: "Tereza Cristina", birthday: "1982-01-28" }
-            ];
-            saveMembers();
+    
+    function saveDeletePreferences() {
+        localStorage.setItem(STORAGE_PREFERENCES, JSON.stringify(deletePreferences));
+    }
+    
+    // Modal de confirmação personalizado
+    function showConfirmModal(options) {
+        return new Promise((resolve) => {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal-overlay';
+            modalDiv.innerHTML = `
+                <div class="confirm-modal">
+                    <h3>${options.title}</h3>
+                    <p>${options.message}</p>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="dontAskAgainCheckbox">
+                        <label for="dontAskAgainCheckbox">Não perguntar novamente ao excluir ${options.type === 'member' ? 'membros' : 'eventos'}</label>
+                    </div>
+                    <div class="modal-buttons">
+                        <button id="modalCancelBtn" style="background:#E5E7EB; color:#0A0A2A;">Cancelar</button>
+                        <button id="modalConfirmBtn" style="background:#DC2626; color:white;">Excluir</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+            
+            const confirmBtn = modalDiv.querySelector('#modalConfirmBtn');
+            const cancelBtn = modalDiv.querySelector('#modalCancelBtn');
+            const dontAsk = modalDiv.querySelector('#dontAskAgainCheckbox');
+            
+            const close = () => modalDiv.remove();
+            
+            confirmBtn.onclick = () => {
+                if (dontAsk.checked) {
+                    if (options.type === 'member') deletePreferences.member = true;
+                    else deletePreferences.event = true;
+                    saveDeletePreferences();
+                }
+                close();
+                resolve(true);
+            };
+            cancelBtn.onclick = () => { close(); resolve(false); };
+            modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) { close(); resolve(false); } });
+        });
+    }
+    
+    async function requestDelete(type, id, name) {
+        const prefKey = type === 'member' ? 'member' : 'event';
+        if (deletePreferences[prefKey]) {
+            return true;
         }
-        const storedEvents = localStorage.getItem(STORAGE_EVENTS);
-        if (storedEvents) events = JSON.parse(storedEvents);
+        const confirmed = await showConfirmModal({
+            title: type === 'member' ? "Excluir Membro" : "Excluir Evento",
+            message: type === 'member' ? `Deseja excluir "${name}" da lista de membros?` : `Deseja remover o evento "${name}"?`,
+            type: type
+        });
+        return confirmed;
+    }
+    
+    // ==================== FUNÇÕES DE BANCO DE DADOS ====================
+    async function loadDataFromFirebase() {
+        if (!useFirebase) return false;
+        try {
+            const membersSnapshot = await firebase.database().ref('members').once('value');
+            const eventsSnapshot = await firebase.database().ref('events').once('value');
+            const authSnapshot = await firebase.database().ref('authorizedEmails').once('value');
+            members = membersSnapshot.exists() ? membersSnapshot.val() : [];
+            events = eventsSnapshot.exists() ? eventsSnapshot.val() : [];
+            authorizedEmails = authSnapshot.exists() ? authSnapshot.val() : [];
+            if (members.length === 0 && events.length === 0) loadSampleData();
+            return true;
+        } catch(e) { return false; }
+    }
+    
+    function loadSampleData() {
+        members = [
+            { id: 1, name: "Ana Lúcia Mendes", birthday: "1975-05-20" },
+            { id: 2, name: "João Batista Silva", birthday: "1968-12-10" },
+            { id: 3, name: "Maria Clara Souza", birthday: "1995-03-25" },
+            { id: 4, name: "Rafael Oliveira", birthday: "2000-01-15" },
+            { id: 5, name: "Tereza Cristina", birthday: "1982-01-28" }
+        ];
+        const hoje = new Date();
+        events = [
+            { id: 100, title: "Culto de Louvor", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 5, 19, 0).toISOString(), color: "#FFA500" },
+            { id: 101, title: "Escola Dominical", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 2, 9, 0).toISOString(), color: "#FF8C00" }
+        ];
+        saveToFirebase();
+    }
+    
+    async function saveToFirebase() {
+        if (!useFirebase) return;
+        try {
+            await firebase.database().ref('members').set(members);
+            await firebase.database().ref('events').set(events);
+            await firebase.database().ref('authorizedEmails').set(authorizedEmails);
+            document.getElementById('syncStatus').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Sincronizado';
+        } catch(e) { console.error("Erro ao salvar"); }
+    }
+    
+    async function loadAll() {
+        if (useFirebase) await loadDataFromFirebase();
         else {
-            const hoje = new Date();
-            events = [
-                { id: 100, title: "Culto de Louvor", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 5, 19, 0).toISOString(), color: "#FFA500" },
-                { id: 101, title: "Escola Dominical", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 2, 9, 0).toISOString(), color: "#FF8C00" }
-            ];
-            saveEvents();
+            const storedMembers = localStorage.getItem('ibv_members_local');
+            const storedEvents = localStorage.getItem('ibv_events_local');
+            members = storedMembers ? JSON.parse(storedMembers) : [];
+            events = storedEvents ? JSON.parse(storedEvents) : [];
+            if (members.length === 0 && events.length === 0) loadSampleData();
         }
     }
-    function saveMembers() { localStorage.setItem(STORAGE_MEMBERS, JSON.stringify(members)); }
-    function saveEvents() { localStorage.setItem(STORAGE_EVENTS, JSON.stringify(events)); }
-
-    // Verificar permissões
+    
+    async function saveAll() {
+        if (useFirebase) await saveToFirebase();
+        else {
+            localStorage.setItem('ibv_members_local', JSON.stringify(members));
+            localStorage.setItem('ibv_events_local', JSON.stringify(events));
+        }
+    }
+    
     function canEdit() {
         if (!currentUser) return false;
         if (currentUser.isAdmin) return true;
         return currentUser.isAuthorized;
     }
-
-    // Login com modal
+    
     function showLoginModal() {
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal-overlay';
@@ -541,7 +708,7 @@
                 <input type="password" id="loginPassword" placeholder="Senha" autocomplete="current-password">
                 <button id="loginConfirmBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
                 <button id="loginCancelBtn" style="background:#E5E7EB; color:#0A0A2A; margin-top:8px;">Cancelar</button>
-                <p style="font-size:0.7rem; margin-top:12px; text-align:center; color:#666;">Apenas administradora e emails autorizados podem editar</p>
+                <p style="font-size:0.7rem; margin-top:12px; text-align:center;">Dados compartilhados em tempo real com todos</p>
             </div>
         `;
         document.body.appendChild(modalDiv);
@@ -550,10 +717,9 @@
         const cancelBtn = modalDiv.querySelector('#loginCancelBtn');
         const emailInput = modalDiv.querySelector('#loginEmail');
         const passwordInput = modalDiv.querySelector('#loginPassword');
-        
         const closeModal = () => modalDiv.remove();
         
-        confirmBtn.onclick = () => {
+        confirmBtn.onclick = async () => {
             const email = emailInput.value.trim().toLowerCase();
             const password = passwordInput.value;
             
@@ -561,65 +727,38 @@
                 currentUser = { email, isAdmin: true, isAuthorized: true };
                 closeModal();
                 updateUIForUser();
-                renderAll();
-                alert("✅ Bem-vinda, Administradora! Você tem acesso total.");
+                await renderAll();
+                showToast("✅ Bem-vinda, Administradora! Todos os dados são compartilhados em tempo real.", "success");
             } else if (authorizedEmails.includes(email)) {
                 currentUser = { email, isAdmin: false, isAuthorized: true };
                 closeModal();
                 updateUIForUser();
-                renderAll();
-                alert(`✅ Olá ${email}! Você tem permissão para editar.`);
+                await renderAll();
+                showToast(`✅ Olá ${email}! Você tem permissão para editar.`, "success");
             } else {
-                alert("❌ Acesso negado! Email não autorizado ou senha incorreta.\n\nPara visualização apenas, clique em Cancelar.");
+                showToast("❌ Acesso negado! Email não autorizado ou senha incorreta.", "error");
             }
         };
-        
         cancelBtn.onclick = closeModal;
-        modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) closeModal(); });
     }
     
     function logout() {
         currentUser = null;
         updateUIForUser();
         renderAll();
-        alert("Você saiu do sistema. Agora você tem apenas acesso de visualização.");
+        showToast("🔓 Você saiu do sistema. Agora tem apenas acesso de visualização.", "info");
     }
     
     function updateUIForUser() {
         const canEditFlag = canEdit();
-        const addMemberBtn = document.getElementById('addMemberBtn');
-        const addEventBtn = document.getElementById('addEventBtn');
-        const memberNameInput = document.getElementById('memberName');
-        const memberBirthdayInput = document.getElementById('memberBirthday');
-        const eventTitleInput = document.getElementById('eventTitle');
-        const eventDateTimeInput = document.getElementById('eventDateTime');
-        
-        if (addMemberBtn) addMemberBtn.disabled = !canEditFlag;
-        if (addEventBtn) addEventBtn.disabled = !canEditFlag;
-        if (memberNameInput) memberNameInput.disabled = !canEditFlag;
-        if (memberBirthdayInput) memberBirthdayInput.disabled = !canEditFlag;
-        if (eventTitleInput) eventTitleInput.disabled = !canEditFlag;
-        if (eventDateTimeInput && flatpickrInstance) {
-            if (!canEditFlag) flatpickrInstance.set("disable", [true]);
-            else flatpickrInstance.set("disable", [false]);
-        }
-        
+        const btns = ['addMemberBtn', 'addEventBtn', 'addAuthEmailBtn'];
+        btns.forEach(id => { const btn = document.getElementById(id); if(btn) btn.disabled = !canEditFlag; });
+        const inputs = ['memberName', 'memberBirthday', 'eventTitle', 'eventDateTime'];
+        inputs.forEach(id => { const input = document.getElementById(id); if(input) input.disabled = !canEditFlag; });
         const addCards = document.querySelectorAll('#addMemberCard, #addEventCard');
-        addCards.forEach(card => {
-            if (!canEditFlag) card.style.opacity = '0.6';
-            else card.style.opacity = '1';
-        });
-        
+        addCards.forEach(card => card.style.opacity = canEditFlag ? '1' : '0.6');
         const adminTabBtn = document.getElementById('adminTabBtn');
-        if (currentUser && currentUser.isAdmin) {
-            adminTabBtn.style.display = 'flex';
-        } else {
-            adminTabBtn.style.display = 'none';
-            if (document.getElementById('adminTab').classList.contains('active')) {
-                document.querySelector('.tab-btn[data-tab="membersTab"]').click();
-            }
-        }
-        
+        adminTabBtn.style.display = (currentUser && currentUser.isAdmin) ? 'flex' : 'none';
         document.getElementById('userEmailDisplay').innerHTML = currentUser ? currentUser.email : 'Não autenticado';
         document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'block';
         document.getElementById('logoutBtn').style.display = currentUser ? 'block' : 'none';
@@ -627,15 +766,10 @@
     }
     
     function shareLink() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url).then(() => {
-            alert("✅ Link copiado! Compartilhe com quem quiser.\n\n🔒 Apenas administradora e emails autorizados podem editar.");
-        }).catch(() => {
-            prompt("Copie o link abaixo:", url);
-        });
+        navigator.clipboard.writeText(window.location.href);
+        showToast("✅ Link copiado! Todos que acessarem verão os mesmos dados.", "success");
     }
     
-    // Renderizações
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     
@@ -699,7 +833,7 @@
                         ${monthMembers.length ? monthMembers.map(m => `
                             <div class="member-row">
                                 <span><i class="fas fa-user"></i> ${escapeHtml(m.name)}</span>
-                                <span>Dia ${m.day} ${canEditFlag ? `<button class="delete-memb" data-id="${m.id}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; font-size:0.7rem; width:auto; margin-left:10px; border-radius:40px;">Excluir</button>` : ''}</span>
+                                <span>Dia ${m.day} ${canEditFlag ? `<button class="delete-memb" data-id="${m.id}" data-name="${escapeHtml(m.name)}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; font-size:0.7rem; width:auto; margin-left:10px;">Excluir</button>` : ''}</span>
                             </div>
                         `).join('') : '<div style="padding:10px 0; color:#999;">Nenhum aniversariante</div>'}
                     </div>
@@ -719,34 +853,37 @@
         
         if (canEditFlag) {
             document.querySelectorAll('.delete-memb').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     const id = parseInt(btn.getAttribute('data-id'));
-                    const member = members.find(m => m.id === id);
-                    if (member && confirm(`Excluir "${member.name}"?`)) {
+                    const name = btn.getAttribute('data-name');
+                    const confirmed = await requestDelete('member', id, name);
+                    if (confirmed) {
                         members = members.filter(m => m.id !== id);
-                        saveMembers();
-                        renderMembersByMonth();
-                        renderWeeklyCalendar();
+                        await saveAll();
+                        await renderAll();
+                        showToast(`🗑️ Membro "${name}" removido com sucesso!`, "success");
                     }
                 });
             });
         }
     }
     
-    function addMember(name, birthdayISO) {
-        if (!canEdit()) { alert("Você não tem permissão para editar. Faça login como administradora ou email autorizado."); return false; }
-        if (!name?.trim()) { alert("Informe o nome"); return false; }
+    async function addMember(name, birthdayISO) {
+        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return false; }
+        if (!name?.trim()) { showToast("Informe o nome do membro", "error"); return false; }
         members.push({ id: Date.now(), name: name.trim(), birthday: birthdayISO || null });
-        saveMembers();
-        renderMembersByMonth();
-        renderWeeklyCalendar();
+        await saveAll();
+        await renderAll();
+        showToast(`✅ Membro "${name.trim()}" adicionado com sucesso!`, "success");
         return true;
     }
     
-    // Eventos
     function refreshCalendarAndList() {
-        if (calendarInstance) calendarInstance.refetchEvents();
+        if (calendarInstance) {
+            calendarInstance.removeAllEvents();
+            calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+        }
         renderUpcomingEvents();
     }
     
@@ -759,17 +896,19 @@
         const canEditFlag = canEdit();
         container.innerHTML = upcoming.map(ev => {
             const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
-            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}"><i class="fas fa-trash"></i></button>` : ''}</div>`;
+            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}" data-name="${escapeHtml(ev.title)}"><i class="fas fa-trash"></i></button>` : ''}</div>`;
         }).join('');
         if (canEditFlag) {
             document.querySelectorAll('.delete-event').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', async () => {
                     const id = parseInt(btn.getAttribute('data-id'));
-                    const evt = events.find(e => e.id === id);
-                    if (evt && confirm(`Remover "${evt.title}"?`)) {
+                    const name = btn.getAttribute('data-name');
+                    const confirmed = await requestDelete('event', id, name);
+                    if (confirmed) {
                         events = events.filter(e => e.id !== id);
-                        saveEvents();
-                        refreshCalendarAndList();
+                        await saveAll();
+                        await renderAll();
+                        showToast(`🗑️ Evento "${name}" removido com sucesso!`, "success");
                     }
                 });
             });
@@ -785,12 +924,16 @@
             buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana' },
             events: events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })),
             editable: false,
-            eventClick: (info) => {
-                if (canEdit() && confirm(`Excluir evento "${info.event.title}"?`)) {
-                    const id = parseInt(info.event.id);
-                    events = events.filter(e => e.id !== id);
-                    saveEvents();
-                    refreshCalendarAndList();
+            eventClick: async (info) => {
+                if (canEdit()) {
+                    const confirmed = await requestDelete('event', parseInt(info.event.id), info.event.title);
+                    if (confirmed) {
+                        const id = parseInt(info.event.id);
+                        events = events.filter(e => e.id !== id);
+                        await saveAll();
+                        await renderAll();
+                        showToast(`🗑️ Evento "${info.event.title}" removido com sucesso!`, "success");
+                    }
                 }
             },
             height: "auto"
@@ -798,17 +941,17 @@
         calendarInstance.render();
     }
     
-    function addEvent(title, dateTimeISO, color) {
-        if (!canEdit()) { alert("Sem permissão para editar"); return false; }
-        if (!title?.trim()) { alert("Título obrigatório"); return false; }
-        if (!dateTimeISO) { alert("Selecione data/hora"); return false; }
+    async function addEvent(title, dateTimeISO, color) {
+        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return false; }
+        if (!title?.trim()) { showToast("Título do evento é obrigatório", "error"); return false; }
+        if (!dateTimeISO) { showToast("Selecione data e hora", "error"); return false; }
         events.push({ id: Date.now(), title: title.trim(), start: dateTimeISO, color: color || "#FFA500" });
-        saveEvents();
-        refreshCalendarAndList();
+        await saveAll();
+        await renderAll();
+        showToast(`✅ Evento "${title.trim()}" adicionado com sucesso!`, "success");
         return true;
     }
     
-    // Admin
     function renderAuthorizedEmails() {
         const container = document.getElementById('authorizedEmailsList');
         if (!container) return;
@@ -819,74 +962,75 @@
             </div>
         `).join('');
         document.querySelectorAll('.remove-auth').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 const email = btn.getAttribute('data-email');
                 authorizedEmails = authorizedEmails.filter(e => e !== email);
-                saveAuthorizedEmails();
+                await saveAll();
                 renderAuthorizedEmails();
-                if (currentUser && currentUser.email === email && !currentUser.isAdmin) {
-                    alert("Seu acesso foi removido. Você será desconectado.");
-                    logout();
-                }
+                if (currentUser && currentUser.email === email && !currentUser.isAdmin) logout();
+                showToast(`📧 ${email} foi removido da lista autorizada`, "info");
             });
         });
     }
     
-    function addAuthorizedEmail(email) {
-        if (!currentUser?.isAdmin) { alert("Apenas a administradora pode autorizar emails."); return; }
+    async function addAuthorizedEmail(email) {
+        if (!currentUser?.isAdmin) { showToast("Apenas a administradora pode autorizar emails", "error"); return; }
         const normalized = email.trim().toLowerCase();
-        if (!normalized || !normalized.includes('@')) { alert("Email inválido"); return; }
-        if (normalized === ADMIN_EMAIL) { alert("Este é o email da administradora"); return; }
-        if (authorizedEmails.includes(normalized)) { alert("Email já autorizado"); return; }
+        if (!normalized || !normalized.includes('@')) { showToast("Email inválido", "error"); return; }
+        if (normalized === ADMIN_EMAIL) { showToast("Este é o email da administradora", "error"); return; }
+        if (authorizedEmails.includes(normalized)) { showToast("Email já autorizado", "error"); return; }
         authorizedEmails.push(normalized);
-        saveAuthorizedEmails();
+        await saveAll();
         renderAuthorizedEmails();
-        alert(`✅ ${normalized} agora pode editar os dados!`);
+        showToast(`✅ ${normalized} agora pode editar os dados!`, "success");
     }
     
-    function renderAll() {
+    async function renderAll() {
         renderWeeklyCalendar();
         renderMembersByMonth();
         renderUpcomingEvents();
-        if (calendarInstance) calendarInstance.refetchEvents();
+        if (calendarInstance) {
+            calendarInstance.removeAllEvents();
+            calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+        }
         renderAuthorizedEmails();
     }
     
-    function init() {
-        loadAuthorizedEmails();
-        loadData();
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+    
+    async function init() {
+        loadDeletePreferences();
+        await loadAll();
         initCalendar();
-        renderAll();
+        await renderAll();
         
         document.getElementById('loginBtn').onclick = showLoginModal;
         document.getElementById('logoutBtn').onclick = logout;
         document.getElementById('shareLinkBtn').onclick = shareLink;
-        document.getElementById('addMemberBtn').onclick = () => {
+        document.getElementById('addMemberBtn').onclick = async () => {
             const name = document.getElementById('memberName').value;
             const birthday = document.getElementById('memberBirthday').value;
-            if (addMember(name, birthday)) {
+            if (await addMember(name, birthday)) {
                 document.getElementById('memberName').value = '';
                 document.getElementById('memberBirthday').value = '';
-                alert("Membro adicionado!");
             }
         };
-        document.getElementById('addEventBtn').onclick = () => {
+        document.getElementById('addEventBtn').onclick = async () => {
             const title = document.getElementById('eventTitle').value;
             const dateRaw = document.getElementById('eventDateTime').value;
             const color = document.getElementById('eventColor').value;
-            if (!dateRaw) { alert("Selecione data/hora"); return; }
+            if (!dateRaw) { showToast("Selecione data e hora", "error"); return; }
             let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
             const valid = new Date(iso);
-            if (isNaN(valid.getTime())) { alert("Data inválida"); return; }
-            if (addEvent(title, valid.toISOString(), color)) {
+            if (isNaN(valid.getTime())) { showToast("Data inválida", "error"); return; }
+            if (await addEvent(title, valid.toISOString(), color)) {
                 document.getElementById('eventTitle').value = '';
                 if (flatpickrInstance) flatpickrInstance.clear();
-                alert("Evento adicionado!");
             }
         };
-        document.getElementById('addAuthEmailBtn').onclick = () => {
+        document.getElementById('addAuthEmailBtn').onclick = async () => {
             const email = document.getElementById('newAuthEmail').value;
-            addAuthorizedEmail(email);
+            await addAuthorizedEmail(email);
             document.getElementById('newAuthEmail').value = '';
         };
         
@@ -904,9 +1048,11 @@
         });
         
         updateUIForUser();
+        
+        if (!useFirebase) {
+            showToast("⚠️ Configure o Firebase para compartilhar dados entre todos os usuários!", "info");
+        }
     }
-    
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
     
     init();
 </script>
