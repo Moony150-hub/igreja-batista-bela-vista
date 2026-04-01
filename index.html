@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Igreja Batista em Bela Vista - Gestão de Membros e Eventos</title>
+    <!-- FullCalendar CSS e JS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #FFF9E8 0%, #FFF2E0 100%);
+            color: #0A0A2A;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(10,10,42,0.2);
+            overflow: hidden;
+        }
+
+        .church-header {
+            background: linear-gradient(135deg, #0A0A2A 0%, #12123A 50%, #1A1A4A 100%);
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+        }
+        .church-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD966 30%, #FFB347 70%, #FFA500 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.3;
+        }
+        .church-header .verse {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: #FFD966;
+            margin-top: 8px;
+        }
+
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #FFF8F0;
+            border-bottom: 1px solid #FFE0B5;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .user-email {
+            font-size: 0.85rem;
+            color: #0A0A2A;
+            background: #FFEFE0;
+            padding: 6px 14px;
+            border-radius: 40px;
+        }
+        .login-btn, .logout-btn {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #0A0A2A;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: auto;
+        }
+        .logout-btn {
+            background: #DC2626;
+            color: white;
+        }
+        .admin-badge {
+            background: #FFA500;
+            color: #0A0A2A;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .share-link {
+            background: #FFF0E0;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .share-link:hover {
+            background: #FFE0C0;
+        }
+
+        .tabs {
+            display: flex;
+            background: #FFF8F0;
+            border-bottom: 2px solid #FFE0B5;
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #2A2A4A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+        .tab-btn i {
+            color: #FF8C00;
+        }
+        .tab-btn.active {
+            background: white;
+            color: #FF8C00;
+            border-bottom: 3px solid #FF8C00;
+        }
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease;
+            background: #FFFFFF;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 6px 20px rgba(10,10,42,0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #FFEEDD;
+        }
+        .card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #0A0A2A;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid #FFA500;
+            padding-left: 16px;
+        }
+        .card h3 i {
+            color: #FF8C00;
+            margin-right: 12px;
+        }
+
+        .admin-panel {
+            background: linear-gradient(135deg, #FFF9F0, #FFF4E8);
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #FFD9A5;
+        }
+        .authorized-list {
+            margin-top: 12px;
+        }
+        .auth-email-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 40px;
+            margin: 6px 0;
+        }
+        .remove-auth {
+            background: #FFEFEF;
+            color: #DC2626;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            width: auto;
+        }
+        .add-email-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .add-email-form input {
+            flex: 1;
+            min-width: 180px;
+        }
+        .add-email-form button {
+            width: auto;
+            padding: 10px 20px;
+        }
+
+        .weekly-birthdays {
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFF4E8 100%);
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .week-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            padding: 8px 4px;
+            text-align: center;
+            border: 1px solid #FFE0B5;
+        }
+        .day-card.highlight {
+            background: linear-gradient(135deg, #FFD966, #FFB347);
+        }
+        .day-name { font-weight: 700; font-size: 0.7rem; color: #FF8C00; }
+        .day-date { font-size: 0.85rem; font-weight: 600; margin: 4px 0; }
+        .birthday-names { font-size: 0.65rem; color: #4B5563; }
+        
+        .months-accordion .month-item {
+            margin-bottom: 8px;
+            border: 1px solid #FFE0B5;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .month-header {
+            background: #FFFBF5;
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .month-members {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            padding: 0 16px;
+        }
+        .month-members.open {
+            max-height: 500px;
+            padding: 12px 16px;
+            border-top: 1px solid #FFE0B5;
+        }
+        .member-row {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #FFEFE0;
+        }
+        .form-group { margin-bottom: 1rem; }
+        input, button {
+            border-radius: 60px;
+            border: 1px solid #FFE0B5;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        button {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            color: #0A0A2A;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-danger {
+            background: #DC2626;
+            color: white;
+        }
+        .event-form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .event-form-row .form-group { flex: 1; margin-bottom: 0; }
+        @media (max-width: 600px) {
+            .event-form-row { flex-direction: column; }
+            .week-days { gap: 4px; }
+            .user-bar { flex-direction: column; align-items: stretch; }
+        }
+        .event-list { margin-top: 20px; background: #FFFBF7; border-radius: 20px; padding: 1rem; }
+        .event-item { display: flex; justify-content: space-between; align-items: center; background: white; margin: 8px 0; padding: 10px 16px; border-radius: 60px; border-left: 4px solid #FFA500; }
+        .delete-event { background: none; border: none; color: #DC2626; cursor: pointer; padding: 6px 12px; }
+        footer { text-align: center; padding: 1rem; font-size: 0.75rem; color: #FF8C00; background: #FFFBF7; border-top: 1px solid #FFEFE0; }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10,10,42,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+        .modal-confirm {
+            background: white;
+            border-radius: 28px;
+            max-width: 400px;
+            width: 100%;
+            padding: 1.8rem;
+            border-top: 5px solid #FFA500;
+        }
+        .modal-confirm input {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .login-modal {
+            background: white;
+            border-radius: 28px;
+            max-width: 380px;
+            width: 100%;
+            padding: 2rem;
+            border-top: 5px solid #FFA500;
+        }
+        .login-modal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .login-modal input {
+            margin-bottom: 12px;
+        }
+        .login-modal button {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="church-header">
+        <h1>Igreja Batista em Bela Vista</h1>
+        <div class="verse">“Alegrei-me quando me disseram: Vamos à casa do Senhor”</div>
+    </div>
+
+    <div class="user-bar">
+        <div class="user-info">
+            <div class="user-email" id="userEmailDisplay">Não autenticado</div>
+            <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            <span id="adminBadge" class="admin-badge" style="display:none;">👑 Administradora</span>
+        </div>
+        <div class="share-link" id="shareLinkBtn">
+            <i class="fas fa-share-alt"></i> Compartilhar Link
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="membersTab"><i class="fas fa-birthday-cake"></i> <span>Aniversários</span></button>
+        <button class="tab-btn" data-tab="eventsTab"><i class="fas fa-calendar-alt"></i> <span>Eventos</span></button>
+        <button class="tab-btn" id="adminTabBtn" data-tab="adminTab" style="display:none;"><i class="fas fa-user-shield"></i> <span>Admin</span></button>
+    </div>
+
+    <!-- ABA ANIVERSÁRIOS -->
+    <div id="membersTab" class="tab-content active">
+        <div id="membersEditArea">
+            <div class="card" id="addMemberCard">
+                <h3><i class="fas fa-user-plus"></i> Adicionar Membro</h3>
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="memberName" placeholder="Digite o nome completo">
+                </div>
+                <div class="form-group">
+                    <label>Data de Aniversário</label>
+                    <input type="date" id="memberBirthday">
+                </div>
+                <button id="addMemberBtn"><i class="fas fa-save"></i> Salvar Membro</button>
+            </div>
+        </div>
+        <div class="weekly-birthdays">
+            <div class="weekly-title"><i class="fas fa-calendar-week"></i> Aniversariantes da Semana</div>
+            <div class="week-days" id="weekDaysContainer"></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-calendar-alt"></i> Aniversariantes por Mês</h3>
+            <div class="months-accordion" id="monthsAccordion"></div>
+        </div>
+    </div>
+
+    <!-- ABA EVENTOS -->
+    <div id="eventsTab" class="tab-content">
+        <div id="eventsEditArea">
+            <div class="card" id="addEventCard">
+                <h3><i class="fas fa-calendar-plus"></i> Adicionar Evento</h3>
+                <div class="event-form-row">
+                    <div class="form-group"><label>Título</label><input type="text" id="eventTitle" placeholder="Ex: Culto"></div>
+                    <div class="form-group"><label>Data e Hora</label><input type="text" id="eventDateTime" placeholder="Selecione data/hora"></div>
+                    <div class="form-group"><label>Cor</label><input type="color" id="eventColor" value="#FFA500"></div>
+                    <button id="addEventBtn"><i class="fas fa-plus-circle"></i> Adicionar</button>
+                </div>
+            </div>
+        </div>
+        <div class="card"><h3><i class="fas fa-calendar-week"></i> Calendário de Eventos</h3><div id="calendar"></div></div>
+        <div class="event-list"><h4><i class="fas fa-list"></i> Próximos Eventos</h4><div id="upcomingEventsList"></div></div>
+    </div>
+
+    <!-- ABA ADMIN -->
+    <div id="adminTab" class="tab-content">
+        <div class="card">
+            <h3><i class="fas fa-user-shield"></i> Gerenciar Acessos</h3>
+            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados da igreja. Somente você (administradora) pode gerenciar esta lista.</p>
+            <div class="admin-panel">
+                <h4><i class="fas fa-envelope"></i> Emails Autorizados para Edição</h4>
+                <div id="authorizedEmailsList" class="authorized-list"></div>
+                <div class="add-email-form">
+                    <input type="email" id="newAuthEmail" placeholder="Email@exemplo.com">
+                    <button id="addAuthEmailBtn"><i class="fas fa-plus"></i> Autorizar</button>
+                </div>
+            </div>
+            <div class="admin-panel">
+                <h4><i class="fas fa-info-circle"></i> Como funciona</h4>
+                <p style="font-size: 0.85rem; line-height: 1.6;">
+                🔐 <strong>Administradora:</strong> nascimentonerisamannda@gmail.com (senha: 152926)<br>
+                👑 Você tem acesso total e pode autorizar outros emails.<br>
+                📧 Emails autorizados podem <strong>adicionar, editar e excluir</strong> membros e eventos.<br>
+                👀 Visitantes não autenticados ou com email não autorizado só podem <strong>visualizar</strong> os dados.<br>
+                🔗 Use o botão "Compartilhar Link" para enviar o acesso a qualquer pessoa.
+                </p>
+            </div>
+        </div>
+    </div>
+    <footer>Igreja Batista em Bela Vista • Compartilhe fé e celebração</footer>
+</div>
+
+<script>
+    // CONFIGURAÇÃO
+    const ADMIN_EMAIL = "nascimentonerisamannda@gmail.com";
+    const ADMIN_PASSWORD = "152926";
+    const STORAGE_AUTH = "ibv_authorized_emails";
+    const STORAGE_MEMBERS = "ibv_members_data";
+    const STORAGE_EVENTS = "ibv_events_data";
+
+    let currentUser = null;
+    let authorizedEmails = [];
+    let members = [];
+    let events = [];
+    let calendarInstance = null;
+    let flatpickrInstance = null;
+
+    // Carregar dados
+    function loadAuthorizedEmails() {
+        const stored = localStorage.getItem(STORAGE_AUTH);
+        if (stored) {
+            authorizedEmails = JSON.parse(stored);
+        } else {
+            authorizedEmails = [];
+            saveAuthorizedEmails();
+        }
+    }
+    function saveAuthorizedEmails() { localStorage.setItem(STORAGE_AUTH, JSON.stringify(authorizedEmails)); }
+
+    function loadData() {
+        const storedMembers = localStorage.getItem(STORAGE_MEMBERS);
+        if (storedMembers) members = JSON.parse(storedMembers);
+        else {
+            members = [
+                { id: 1, name: "Ana Lúcia Mendes", birthday: "1975-05-20" },
+                { id: 2, name: "João Batista Silva", birthday: "1968-12-10" },
+                { id: 3, name: "Maria Clara Souza", birthday: "1995-03-25" },
+                { id: 4, name: "Rafael Oliveira", birthday: "2000-01-15" },
+                { id: 5, name: "Tereza Cristina", birthday: "1982-01-28" }
+            ];
+            saveMembers();
+        }
+        const storedEvents = localStorage.getItem(STORAGE_EVENTS);
+        if (storedEvents) events = JSON.parse(storedEvents);
+        else {
+            const hoje = new Date();
+            events = [
+                { id: 100, title: "Culto de Louvor", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 5, 19, 0).toISOString(), color: "#FFA500" },
+                { id: 101, title: "Escola Dominical", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 2, 9, 0).toISOString(), color: "#FF8C00" }
+            ];
+            saveEvents();
+        }
+    }
+    function saveMembers() { localStorage.setItem(STORAGE_MEMBERS, JSON.stringify(members)); }
+    function saveEvents() { localStorage.setItem(STORAGE_EVENTS, JSON.stringify(events)); }
+
+    // Verificar permissões
+    function canEdit() {
+        if (!currentUser) return false;
+        if (currentUser.isAdmin) return true;
+        return currentUser.isAuthorized;
+    }
+
+    // Login com modal
+    function showLoginModal() {
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-overlay';
+        modalDiv.innerHTML = `
+            <div class="login-modal">
+                <h3><i class="fas fa-church"></i> Acesso ao Sistema</h3>
+                <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+                <input type="password" id="loginPassword" placeholder="Senha" autocomplete="current-password">
+                <button id="loginConfirmBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                <button id="loginCancelBtn" style="background:#E5E7EB; color:#0A0A2A; margin-top:8px;">Cancelar</button>
+                <p style="font-size:0.7rem; margin-top:12px; text-align:center; color:#666;">Apenas administradora e emails autorizados podem editar</p>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        
+        const confirmBtn = modalDiv.querySelector('#loginConfirmBtn');
+        const cancelBtn = modalDiv.querySelector('#loginCancelBtn');
+        const emailInput = modalDiv.querySelector('#loginEmail');
+        const passwordInput = modalDiv.querySelector('#loginPassword');
+        
+        const closeModal = () => modalDiv.remove();
+        
+        confirmBtn.onclick = () => {
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+            
+            if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+                currentUser = { email, isAdmin: true, isAuthorized: true };
+                closeModal();
+                updateUIForUser();
+                renderAll();
+                alert("✅ Bem-vinda, Administradora! Você tem acesso total.");
+            } else if (authorizedEmails.includes(email)) {
+                currentUser = { email, isAdmin: false, isAuthorized: true };
+                closeModal();
+                updateUIForUser();
+                renderAll();
+                alert(`✅ Olá ${email}! Você tem permissão para editar.`);
+            } else {
+                alert("❌ Acesso negado! Email não autorizado ou senha incorreta.\n\nPara visualização apenas, clique em Cancelar.");
+            }
+        };
+        
+        cancelBtn.onclick = closeModal;
+        modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) closeModal(); });
+    }
+    
+    function logout() {
+        currentUser = null;
+        updateUIForUser();
+        renderAll();
+        alert("Você saiu do sistema. Agora você tem apenas acesso de visualização.");
+    }
+    
+    function updateUIForUser() {
+        const canEditFlag = canEdit();
+        const addMemberBtn = document.getElementById('addMemberBtn');
+        const addEventBtn = document.getElementById('addEventBtn');
+        const memberNameInput = document.getElementById('memberName');
+        const memberBirthdayInput = document.getElementById('memberBirthday');
+        const eventTitleInput = document.getElementById('eventTitle');
+        const eventDateTimeInput = document.getElementById('eventDateTime');
+        
+        if (addMemberBtn) addMemberBtn.disabled = !canEditFlag;
+        if (addEventBtn) addEventBtn.disabled = !canEditFlag;
+        if (memberNameInput) memberNameInput.disabled = !canEditFlag;
+        if (memberBirthdayInput) memberBirthdayInput.disabled = !canEditFlag;
+        if (eventTitleInput) eventTitleInput.disabled = !canEditFlag;
+        if (eventDateTimeInput && flatpickrInstance) {
+            if (!canEditFlag) flatpickrInstance.set("disable", [true]);
+            else flatpickrInstance.set("disable", [false]);
+        }
+        
+        const addCards = document.querySelectorAll('#addMemberCard, #addEventCard');
+        addCards.forEach(card => {
+            if (!canEditFlag) card.style.opacity = '0.6';
+            else card.style.opacity = '1';
+        });
+        
+        const adminTabBtn = document.getElementById('adminTabBtn');
+        if (currentUser && currentUser.isAdmin) {
+            adminTabBtn.style.display = 'flex';
+        } else {
+            adminTabBtn.style.display = 'none';
+            if (document.getElementById('adminTab').classList.contains('active')) {
+                document.querySelector('.tab-btn[data-tab="membersTab"]').click();
+            }
+        }
+        
+        document.getElementById('userEmailDisplay').innerHTML = currentUser ? currentUser.email : 'Não autenticado';
+        document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'block';
+        document.getElementById('logoutBtn').style.display = currentUser ? 'block' : 'none';
+        document.getElementById('adminBadge').style.display = (currentUser && currentUser.isAdmin) ? 'inline-block' : 'none';
+    }
+    
+    function shareLink() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            alert("✅ Link copiado! Compartilhe com quem quiser.\n\n🔒 Apenas administradora e emails autorizados podem editar.");
+        }).catch(() => {
+            prompt("Copie o link abaixo:", url);
+        });
+    }
+    
+    // Renderizações
+    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    
+    function getBirthdayMonthDay(birthdayISO) {
+        if (!birthdayISO) return null;
+        const parts = birthdayISO.split('-');
+        if (parts.length === 3) return { month: parseInt(parts[1]), day: parseInt(parts[2]) };
+        return null;
+    }
+    
+    function getBirthdaysOfWeek() {
+        const hoje = new Date();
+        const diaSemana = hoje.getDay();
+        const domingo = new Date(hoje);
+        domingo.setDate(hoje.getDate() - diaSemana);
+        const weekDates = [];
+        for (let d = new Date(domingo); weekDates.length < 7; d.setDate(d.getDate() + 1)) {
+            weekDates.push({ date: new Date(d), dayOfWeek: d.getDay(), dateStr: `${d.getDate()}/${d.getMonth()+1}` });
+        }
+        return weekDates.map(day => ({ ...day, birthdays: members.filter(m => {
+            if (!m.birthday) return false;
+            const bd = getBirthdayMonthDay(m.birthday);
+            return bd && day.date.getDate() === bd.day && (day.date.getMonth() + 1) === bd.month;
+        }).map(m => m.name) }));
+    }
+    
+    function renderWeeklyCalendar() {
+        const weekData = getBirthdaysOfWeek();
+        const hoje = new Date();
+        const hojeStr = `${hoje.getDate()}/${hoje.getMonth()+1}`;
+        document.getElementById('weekDaysContainer').innerHTML = weekData.map(day => `
+            <div class="day-card ${day.dateStr === hojeStr ? 'highlight' : ''}">
+                <div class="day-name">${weekDays[day.dayOfWeek]}</div>
+                <div class="day-date">${day.dateStr}</div>
+                <div class="birthday-names">${day.birthdays.length ? '🎂 ' + day.birthdays.slice(0,2).join(', ') + (day.birthdays.length > 2 ? ` +${day.birthdays.length-2}` : '') : '—'}</div>
+            </div>
+        `).join('');
+    }
+    
+    function renderMembersByMonth() {
+        const membersByMonth = Array(12).fill().map(() => []);
+        members.forEach(member => {
+            if (!member.birthday) return;
+            const bd = getBirthdayMonthDay(member.birthday);
+            if (bd) membersByMonth[bd.month - 1].push({ ...member, day: bd.day });
+        });
+        membersByMonth.forEach(month => month.sort((a,b) => a.day - b.day));
+        
+        const container = document.getElementById('monthsAccordion');
+        if (!container) return;
+        const canEditFlag = canEdit();
+        container.innerHTML = monthNames.map((monthName, idx) => {
+            const monthMembers = membersByMonth[idx];
+            return `
+                <div class="month-item">
+                    <div class="month-header">
+                        <span><i class="fas fa-calendar-alt"></i> ${monthName}</span>
+                        <span class="member-count">${monthMembers.length} aniversariante${monthMembers.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div class="month-members" id="month-${idx}">
+                        ${monthMembers.length ? monthMembers.map(m => `
+                            <div class="member-row">
+                                <span><i class="fas fa-user"></i> ${escapeHtml(m.name)}</span>
+                                <span>Dia ${m.day} ${canEditFlag ? `<button class="delete-memb" data-id="${m.id}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; font-size:0.7rem; width:auto; margin-left:10px; border-radius:40px;">Excluir</button>` : ''}</span>
+                            </div>
+                        `).join('') : '<div style="padding:10px 0; color:#999;">Nenhum aniversariante</div>'}
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        document.querySelectorAll('.month-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const monthDiv = header.parentElement.querySelector('.month-members');
+                if (monthDiv) monthDiv.classList.toggle('open');
+            });
+        });
+        const mesAtual = new Date().getMonth();
+        const currentMonthDiv = document.getElementById(`month-${mesAtual}`);
+        if (currentMonthDiv) currentMonthDiv.classList.add('open');
+        
+        if (canEditFlag) {
+            document.querySelectorAll('.delete-memb').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    const member = members.find(m => m.id === id);
+                    if (member && confirm(`Excluir "${member.name}"?`)) {
+                        members = members.filter(m => m.id !== id);
+                        saveMembers();
+                        renderMembersByMonth();
+                        renderWeeklyCalendar();
+                    }
+                });
+            });
+        }
+    }
+    
+    function addMember(name, birthdayISO) {
+        if (!canEdit()) { alert("Você não tem permissão para editar. Faça login como administradora ou email autorizado."); return false; }
+        if (!name?.trim()) { alert("Informe o nome"); return false; }
+        members.push({ id: Date.now(), name: name.trim(), birthday: birthdayISO || null });
+        saveMembers();
+        renderMembersByMonth();
+        renderWeeklyCalendar();
+        return true;
+    }
+    
+    // Eventos
+    function refreshCalendarAndList() {
+        if (calendarInstance) calendarInstance.refetchEvents();
+        renderUpcomingEvents();
+    }
+    
+    function renderUpcomingEvents() {
+        const container = document.getElementById('upcomingEventsList');
+        if (!container) return;
+        if (!events.length) { container.innerHTML = '<p>Nenhum evento</p>'; return; }
+        const now = new Date();
+        const upcoming = events.map(ev => ({ ...ev, startDate: new Date(ev.start) })).filter(ev => ev.startDate >= now).sort((a,b) => a.startDate - b.startDate);
+        const canEditFlag = canEdit();
+        container.innerHTML = upcoming.map(ev => {
+            const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}"><i class="fas fa-trash"></i></button>` : ''}</div>`;
+        }).join('');
+        if (canEditFlag) {
+            document.querySelectorAll('.delete-event').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    const evt = events.find(e => e.id === id);
+                    if (evt && confirm(`Remover "${evt.title}"?`)) {
+                        events = events.filter(e => e.id !== id);
+                        saveEvents();
+                        refreshCalendarAndList();
+                    }
+                });
+            });
+        }
+    }
+    
+    function initCalendar() {
+        const el = document.getElementById('calendar');
+        if (calendarInstance) calendarInstance.destroy();
+        calendarInstance = new FullCalendar.Calendar(el, {
+            initialView: 'dayGridMonth', locale: 'pt-br',
+            headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' },
+            buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana' },
+            events: events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })),
+            editable: false,
+            eventClick: (info) => {
+                if (canEdit() && confirm(`Excluir evento "${info.event.title}"?`)) {
+                    const id = parseInt(info.event.id);
+                    events = events.filter(e => e.id !== id);
+                    saveEvents();
+                    refreshCalendarAndList();
+                }
+            },
+            height: "auto"
+        });
+        calendarInstance.render();
+    }
+    
+    function addEvent(title, dateTimeISO, color) {
+        if (!canEdit()) { alert("Sem permissão para editar"); return false; }
+        if (!title?.trim()) { alert("Título obrigatório"); return false; }
+        if (!dateTimeISO) { alert("Selecione data/hora"); return false; }
+        events.push({ id: Date.now(), title: title.trim(), start: dateTimeISO, color: color || "#FFA500" });
+        saveEvents();
+        refreshCalendarAndList();
+        return true;
+    }
+    
+    // Admin
+    function renderAuthorizedEmails() {
+        const container = document.getElementById('authorizedEmailsList');
+        if (!container) return;
+        container.innerHTML = authorizedEmails.map(email => `
+            <div class="auth-email-item">
+                <span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>
+                <button class="remove-auth" data-email="${email}">Remover</button>
+            </div>
+        `).join('');
+        document.querySelectorAll('.remove-auth').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const email = btn.getAttribute('data-email');
+                authorizedEmails = authorizedEmails.filter(e => e !== email);
+                saveAuthorizedEmails();
+                renderAuthorizedEmails();
+                if (currentUser && currentUser.email === email && !currentUser.isAdmin) {
+                    alert("Seu acesso foi removido. Você será desconectado.");
+                    logout();
+                }
+            });
+        });
+    }
+    
+    function addAuthorizedEmail(email) {
+        if (!currentUser?.isAdmin) { alert("Apenas a administradora pode autorizar emails."); return; }
+        const normalized = email.trim().toLowerCase();
+        if (!normalized || !normalized.includes('@')) { alert("Email inválido"); return; }
+        if (normalized === ADMIN_EMAIL) { alert("Este é o email da administradora"); return; }
+        if (authorizedEmails.includes(normalized)) { alert("Email já autorizado"); return; }
+        authorizedEmails.push(normalized);
+        saveAuthorizedEmails();
+        renderAuthorizedEmails();
+        alert(`✅ ${normalized} agora pode editar os dados!`);
+    }
+    
+    function renderAll() {
+        renderWeeklyCalendar();
+        renderMembersByMonth();
+        renderUpcomingEvents();
+        if (calendarInstance) calendarInstance.refetchEvents();
+        renderAuthorizedEmails();
+    }
+    
+    function init() {
+        loadAuthorizedEmails();
+        loadData();
+        initCalendar();
+        renderAll();
+        
+        document.getElementById('loginBtn').onclick = showLoginModal;
+        document.getElementById('logoutBtn').onclick = logout;
+        document.getElementById('shareLinkBtn').onclick = shareLink;
+        document.getElementById('addMemberBtn').onclick = () => {
+            const name = document.getElementById('memberName').value;
+            const birthday = document.getElementById('memberBirthday').value;
+            if (addMember(name, birthday)) {
+                document.getElementById('memberName').value = '';
+                document.getElementById('memberBirthday').value = '';
+                alert("Membro adicionado!");
+            }
+        };
+        document.getElementById('addEventBtn').onclick = () => {
+            const title = document.getElementById('eventTitle').value;
+            const dateRaw = document.getElementById('eventDateTime').value;
+            const color = document.getElementById('eventColor').value;
+            if (!dateRaw) { alert("Selecione data/hora"); return; }
+            let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
+            const valid = new Date(iso);
+            if (isNaN(valid.getTime())) { alert("Data inválida"); return; }
+            if (addEvent(title, valid.toISOString(), color)) {
+                document.getElementById('eventTitle').value = '';
+                if (flatpickrInstance) flatpickrInstance.clear();
+                alert("Evento adicionado!");
+            }
+        };
+        document.getElementById('addAuthEmailBtn').onclick = () => {
+            const email = document.getElementById('newAuthEmail').value;
+            addAuthorizedEmail(email);
+            document.getElementById('newAuthEmail').value = '';
+        };
+        
+        const dtInput = document.getElementById('eventDateTime');
+        if (dtInput) flatpickrInstance = flatpickr(dtInput, { enableTime: true, dateFormat: "Y-m-d H:i", time_24hr: true, locale: "pt", defaultHour: 19 });
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-tab');
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => { c.classList.remove('active'); if(c.id === id) c.classList.add('active'); });
+                if (id === 'eventsTab' && calendarInstance) setTimeout(() => calendarInstance.updateSize(), 150);
+            });
+        });
+        
+        updateUIForUser();
+    }
+    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+    
+    init();
+</script>
+</body>
+</html>
