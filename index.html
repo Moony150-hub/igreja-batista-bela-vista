@@ -16,77 +16,112 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #FFF9E8 0%, #FFF2E0 100%);
             color: #0A0A2A;
-            padding: 12px;
+            padding: 10px;
             min-height: 100vh;
         }
+
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(10,10,42,0.2);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -12px rgba(10,10,42,0.2);
             overflow: hidden;
         }
+
         .church-header {
             background: linear-gradient(135deg, #0A0A2A 0%, #12123A 50%, #1A1A4A 100%);
-            padding: 1.8rem 1.5rem;
+            padding: 1.5rem 1rem;
             text-align: center;
         }
         .church-header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.9rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #FFE5B4 0%, #FFD966 30%, #FFB347 70%, #FFA500 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            line-height: 1.3;
         }
         .church-header .verse {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-style: italic;
             color: #FFD966;
-            margin-top: 8px;
+            margin-top: 6px;
         }
+
         .admin-bar {
             background: #FFF8F0;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-bottom: 1px solid #FFE0B5;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .user-email {
+            font-size: 0.7rem;
+            background: #FFEFE0;
+            padding: 4px 10px;
+            border-radius: 40px;
+            color: #0A0A2A;
         }
         .admin-toggle {
             background: linear-gradient(135deg, #FFA500, #FF8C00);
             color: #0A0A2A;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 14px;
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            touch-action: manipulation;
         }
-        .admin-toggle.active {
-            background: #2c5f2d;
+        .admin-toggle:active { transform: scale(0.97); }
+        .admin-toggle.active { background: #2c5f2d; color: white; }
+        .logout-btn {
+            background: #DC2626;
             color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            cursor: pointer;
         }
         .status {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #2c5f2d;
             background: #E8F5E9;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
+
         .tabs {
             display: flex;
             background: #FFF8F0;
@@ -96,58 +131,66 @@
             flex: 1;
             background: transparent;
             border: none;
-            padding: 1rem;
-            font-size: 0.95rem;
+            padding: 12px 0.5rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             color: #2A2A4A;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            touch-action: manipulation;
         }
-        .tab-btn i { color: #FF8C00; }
+        .tab-btn:active { transform: scale(0.97); }
+        .tab-btn i { font-size: 1rem; color: #FF8C00; }
         .tab-btn.active {
             background: white;
             color: #FF8C00;
             border-bottom: 3px solid #FF8C00;
         }
+        @media (max-width: 480px) {
+            .tab-btn span { display: none; }
+            .tab-btn i { font-size: 1.3rem; }
+        }
+
         .tab-content {
             display: none;
-            padding: 1.5rem;
+            padding: 1rem;
             background: #FFFFFF;
         }
         .tab-content.active { display: block; }
+
         .card {
             background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 6px 20px rgba(10,10,42,0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(10,10,42,0.05);
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
             border: 1px solid #FFEEDD;
         }
         .card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #0A0A2A;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             border-left: 4px solid #FFA500;
-            padding-left: 16px;
+            padding-left: 12px;
         }
-        .form-group { margin-bottom: 1rem; }
+        .form-group { margin-bottom: 0.8rem; }
         label {
             font-weight: 600;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: #0A0A2A;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         input, button {
-            border-radius: 60px;
+            border-radius: 50px;
             border: 1px solid #FFE0B5;
-            padding: 12px 16px;
-            font-size: 0.9rem;
+            padding: 10px 14px;
+            font-size: 0.85rem;
             font-family: 'Montserrat', sans-serif;
             width: 100%;
         }
@@ -156,51 +199,58 @@
             color: #0A0A2A;
             font-weight: 600;
             cursor: pointer;
+            touch-action: manipulation;
         }
+        button:active { transform: scale(0.98); }
+        button:disabled { opacity: 0.5; transform: none; }
+
         .weekly-birthdays {
             background: linear-gradient(135deg, #FFF9F0 0%, #FFF4E8 100%);
             border-radius: 20px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
         }
         .week-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 4px;
         }
         .day-card {
             background: white;
-            border-radius: 16px;
-            padding: 8px 4px;
+            border-radius: 12px;
+            padding: 6px 2px;
             text-align: center;
             border: 1px solid #FFE0B5;
         }
         .day-card.highlight { background: linear-gradient(135deg, #FFD966, #FFB347); }
-        .day-name { font-weight: 700; font-size: 0.7rem; color: #FF8C00; }
-        .day-date { font-size: 0.85rem; font-weight: 600; margin: 4px 0; }
-        .birthday-names { font-size: 0.65rem; color: #4B5563; }
+        .day-name { font-weight: 700; font-size: 0.6rem; color: #FF8C00; }
+        .day-date { font-size: 0.7rem; font-weight: 600; margin: 3px 0; }
+        .birthday-names { font-size: 0.55rem; color: #4B5563; white-space: nowrap; overflow-x: auto; max-width: 100%; }
+        
         .months-accordion .month-item {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border: 1px solid #FFE0B5;
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
         }
         .month-header {
             background: #FFFBF5;
-            padding: 12px 16px;
+            padding: 10px 12px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
+            font-size: 0.85rem;
+            touch-action: manipulation;
         }
         .month-members {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s;
-            padding: 0 16px;
+            transition: max-height 0.3s ease;
+            padding: 0 12px;
         }
         .month-members.open {
             max-height: 500px;
-            padding: 12px 16px;
+            padding: 8px 12px;
             border-top: 1px solid #FFE0B5;
         }
         .member-row {
@@ -208,23 +258,29 @@
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid #FFEFE0;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .empty-message {
             padding: 20px;
             text-align: center;
             color: #999;
             font-style: italic;
+            font-size: 0.8rem;
         }
-        .event-list { margin-top: 20px; background: #FFFBF7; border-radius: 20px; padding: 1rem; }
+
+        .event-list { margin-top: 16px; background: #FFFBF7; border-radius: 20px; padding: 1rem; }
         .event-item { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             background: white; 
             margin: 8px 0; 
-            padding: 10px 16px; 
-            border-radius: 60px; 
+            padding: 10px 12px; 
+            border-radius: 50px; 
             border-left: 4px solid #FFA500;
+            gap: 8px;
         }
         .delete-btn {
             background: none;
@@ -232,29 +288,118 @@
             color: #DC2626;
             cursor: pointer;
             font-size: 1rem;
-            padding: 5px 10px;
+            padding: 5px 8px;
             width: auto;
         }
-        #calendar { max-width: 100%; background: white; border-radius: 20px; }
-        footer { text-align: center; padding: 1rem; font-size: 0.75rem; color: #FF8C00; background: #FFFBF7; border-top: 1px solid #FFEFE0; }
-        @media (max-width: 600px) {
-            .week-days { gap: 4px; }
-            .tab-btn span { display: none; }
-        }
+
+        #calendar { max-width: 100%; background: white; border-radius: 16px; overflow-x: auto; }
+        .fc { font-size: 0.7rem; }
+        .fc .fc-toolbar-title { font-size: 0.9rem; }
+        .fc .fc-button { padding: 4px 8px; font-size: 0.7rem; }
+
+        footer { text-align: center; padding: 0.8rem; font-size: 0.65rem; color: #FF8C00; background: #FFFBF7; border-top: 1px solid #FFEFE0; }
+
         .toast {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #0A0A2A;
             color: #FFD966;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
             z-index: 2000;
-            animation: slideIn 0.3s;
+            animation: slideUp 0.3s ease;
+            font-size: 0.8rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 90%;
         }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10,10,42,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            max-width: 350px;
+            width: 90%;
+            padding: 1.5rem;
+            border-top: 5px solid #FFA500;
+        }
+        .modal-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .modal-content input { margin-bottom: 10px; }
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+        .modal-buttons button { width: auto; padding: 8px 20px; }
+
+        .admin-panel {
+            background: linear-gradient(135deg, #FFF9F0, #FFF4E8);
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .auth-list { margin-top: 10px; }
+        .auth-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 40px;
+            margin: 5px 0;
+        }
+        .remove-auth {
+            background: #FFEFEF;
+            color: #DC2626;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .add-email-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .add-email-form input { flex: 1; min-width: 150px; }
+        .add-email-form button { width: auto; padding: 8px 16px; }
+
+        @media (max-width: 480px) {
+            body { padding: 6px; }
+            .card { padding: 1rem; }
+            .week-days { gap: 3px; }
         }
     </style>
 </head>
@@ -266,41 +411,35 @@
     </div>
 
     <div class="admin-bar">
-        <div class="status" id="statusMsg">
-            <i class="fas fa-cloud"></i> Carregando...
+        <div class="user-info">
+            <div class="user-email" id="userEmailDisplay">Não autenticado</div>
+            <button class="admin-toggle" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            <span id="adminBadge" style="display:none; background:#FFA500; color:#0A0A2A; padding:4px 10px; border-radius:40px; font-size:0.65rem;">👑 Admin</span>
         </div>
-        <button class="admin-toggle" id="adminToggleBtn">
-            <i class="fas fa-lock"></i> Modo Administrador
-        </button>
+        <div class="status" id="statusMsg"><i class="fas fa-cloud"></i> Carregando...</div>
     </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="membersTab"><i class="fas fa-birthday-cake"></i> <span>Aniversários</span></button>
         <button class="tab-btn" data-tab="eventsTab"><i class="fas fa-calendar-alt"></i> <span>Eventos</span></button>
+        <button class="tab-btn" id="adminTabBtn" data-tab="adminTab" style="display:none;"><i class="fas fa-user-shield"></i> <span>Admin</span></button>
     </div>
 
     <!-- ABA MEMBROS -->
     <div id="membersTab" class="tab-content active">
-        <div id="adminMembersPanel" style="display: none;">
-            <div class="card">
-                <h3><i class="fas fa-user-plus"></i> Adicionar Novo Membro</h3>
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="newMemberName" placeholder="Digite o nome completo">
-                </div>
-                <div class="form-group">
-                    <label>Data de Aniversário</label>
-                    <input type="date" id="newMemberBirthday">
-                </div>
-                <button id="saveMemberBtn"><i class="fas fa-save"></i> Adicionar Membro</button>
+        <div id="membersEditArea">
+            <div class="card" id="addMemberCard">
+                <h3><i class="fas fa-user-plus"></i> Adicionar Membro</h3>
+                <div class="form-group"><label>Nome Completo</label><input type="text" id="newMemberName" placeholder="Digite o nome completo"></div>
+                <div class="form-group"><label>Data de Aniversário</label><input type="date" id="newMemberBirthday"></div>
+                <button id="saveMemberBtn"><i class="fas fa-save"></i> Salvar Membro</button>
             </div>
         </div>
-        
         <div class="weekly-birthdays">
             <div class="weekly-title"><i class="fas fa-calendar-week"></i> Aniversariantes da Semana</div>
             <div class="week-days" id="weekDaysContainer"></div>
         </div>
-        
         <div class="card">
             <h3><i class="fas fa-calendar-alt"></i> Aniversariantes por Mês</h3>
             <div class="months-accordion" id="monthsAccordion"></div>
@@ -309,33 +448,42 @@
 
     <!-- ABA EVENTOS -->
     <div id="eventsTab" class="tab-content">
-        <div id="adminEventsPanel" style="display: none;">
-            <div class="card">
-                <h3><i class="fas fa-calendar-plus"></i> Adicionar Novo Evento</h3>
-                <div class="form-group">
-                    <label>Título do Evento</label>
-                    <input type="text" id="newEventTitle" placeholder="Ex: Culto de Louvor">
-                </div>
-                <div class="form-group">
-                    <label>Data e Hora</label>
-                    <input type="text" id="newEventDateTime" placeholder="Selecione data e hora">
-                </div>
-                <div class="form-group">
-                    <label>Cor do Evento</label>
-                    <input type="color" id="newEventColor" value="#FFA500">
-                </div>
-                <button id="saveEventBtn"><i class="fas fa-save"></i> Adicionar Evento</button>
+        <div id="eventsEditArea">
+            <div class="card" id="addEventCard">
+                <h3><i class="fas fa-calendar-plus"></i> Adicionar Evento</h3>
+                <div class="form-group"><label>Título</label><input type="text" id="newEventTitle" placeholder="Ex: Culto de Louvor"></div>
+                <div class="form-group"><label>Data e Hora</label><input type="text" id="newEventDateTime" placeholder="Selecione data e hora"></div>
+                <div class="form-group"><label>Cor</label><input type="color" id="newEventColor" value="#FFA500"></div>
+                <button id="saveEventBtn"><i class="fas fa-save"></i> Salvar Evento</button>
             </div>
         </div>
-        
+        <div class="card"><h3><i class="fas fa-calendar-week"></i> Calendário</h3><div id="calendar"></div></div>
+        <div class="event-list"><h4><i class="fas fa-list"></i> Próximos Eventos</h4><div id="upcomingEventsList"></div></div>
+    </div>
+
+    <!-- ABA ADMIN (somente para administradora) -->
+    <div id="adminTab" class="tab-content">
         <div class="card">
-            <h3><i class="fas fa-calendar-week"></i> Calendário de Eventos</h3>
-            <div id="calendar"></div>
-        </div>
-        
-        <div class="event-list">
-            <h4><i class="fas fa-list"></i> Próximos Eventos</h4>
-            <div id="upcomingEventsList"></div>
+            <h3><i class="fas fa-user-shield"></i> Gerenciar Acessos</h3>
+            <p style="margin-bottom: 1rem; font-size: 0.8rem;">Adicione emails de pessoas autorizadas a editar os dados. Todos os dados são compartilhados!</p>
+            <div class="admin-panel">
+                <h4><i class="fas fa-envelope"></i> Emails Autorizados</h4>
+                <div id="authorizedEmailsList" class="auth-list"></div>
+                <div class="add-email-form">
+                    <input type="email" id="newAuthEmail" placeholder="Email@exemplo.com">
+                    <button id="addAuthEmailBtn"><i class="fas fa-plus"></i> Autorizar</button>
+                </div>
+            </div>
+            <div class="admin-panel">
+                <h4><i class="fas fa-info-circle"></i> Como funciona</h4>
+                <p style="font-size: 0.75rem; line-height: 1.5;">
+                🔐 <strong>Administradora:</strong> nascimentonerisamannda@gmail.com (senha: 152926)<br>
+                👑 Você tem acesso total e pode autorizar outros emails.<br>
+                📧 Emails autorizados podem <strong>adicionar, editar e excluir</strong> membros e eventos.<br>
+                🌐 <strong>TODOS os dados são compartilhados!</strong> Dados salvos na nuvem.<br>
+                🔗 Compartilhe o link com quem quiser!
+                </p>
+            </div>
         </div>
     </div>
     
@@ -344,7 +492,6 @@
 
 <script>
     // ==================== CONFIGURAÇÃO JSONBIN.IO ====================
-    // COLOQUE AQUI SEU BIN ID E API KEY DO JSONBIN.IO
     const JSONBIN_BIN_ID = "69cd98c1856a682189ef2e58";  // ← COLE SEU BIN ID AQUI!
     const JSONBIN_API_KEY = "$2a$10$FluV1M5VdMVQCkZA2N/IdO7CgST/wwxqpkg6D1mN5bmAWUiuBe9nu";  // ← COLE SUA API KEY AQUI!
     
@@ -353,38 +500,57 @@
     // ==================== CONFIGURAÇÃO ADMIN ====================
     const ADMIN_EMAIL = "nascimentonerisamannda@gmail.com";
     const ADMIN_PASSWORD = "152926";
+    const STORAGE_PREFERENCES = "ibv_delete_preferences";
     
     let currentUser = null;
     let members = [];
     let events = [];
+    let authorizedEmails = [];
     let calendarInstance = null;
     let flatpickrInstance = null;
+    let deletePreferences = { member: false, event: false };
     
     function showToast(msg, type = "info") {
         const toast = document.createElement('div');
         toast.className = 'toast';
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${msg}`;
+        const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+        toast.innerHTML = `<i class="fas ${icon}"></i> ${msg}`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
+    }
+    
+    function loadDeletePreferences() {
+        const stored = localStorage.getItem(STORAGE_PREFERENCES);
+        if (stored) {
+            try {
+                const prefs = JSON.parse(stored);
+                deletePreferences.member = prefs.member === true;
+                deletePreferences.event = prefs.event === true;
+            } catch(e) {}
+        }
+    }
+    
+    function saveDeletePreferences() {
+        localStorage.setItem(STORAGE_PREFERENCES, JSON.stringify(deletePreferences));
     }
     
     async function loadData() {
         try {
             const response = await fetch(JSONBIN_URL + '/latest', {
-                headers: {
-                    'X-Master-Key': JSONBIN_API_KEY
-                }
+                headers: { 'X-Master-Key': JSONBIN_API_KEY }
             });
             if (response.ok) {
                 const data = await response.json();
                 members = data.record.members || [];
                 events = data.record.events || [];
+                authorizedEmails = data.record.authorizedEmails || [];
                 document.getElementById('statusMsg').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Dados carregados';
                 return true;
             } else {
                 members = [];
                 events = [];
-                document.getElementById('statusMsg').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao carregar';
+                authorizedEmails = [];
+                document.getElementById('statusMsg').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro';
                 return false;
             }
         } catch (error) {
@@ -395,8 +561,7 @@
     
     async function saveToJSONBin() {
         try {
-            const dataToSave = { members, events };
-            
+            const dataToSave = { members, events, authorizedEmails };
             const response = await fetch(JSONBIN_URL, {
                 method: 'PUT',
                 headers: {
@@ -407,14 +572,14 @@
             });
             
             if (response.ok) {
-                showToast("✅ Dados salvos com sucesso! Todos verão as alterações.", "success");
+                showToast("✅ Dados salvos! Todos verão as alterações.", "success");
                 document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> Salvo!';
                 setTimeout(() => {
                     document.getElementById('statusMsg').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Dados carregados';
-                }, 3000);
+                }, 2000);
                 return true;
             } else {
-                showToast("❌ Erro ao salvar dados", "error");
+                showToast("❌ Erro ao salvar", "error");
                 return false;
             }
         } catch (error) {
@@ -423,17 +588,72 @@
         }
     }
     
+    function canEdit() {
+        if (!currentUser) return false;
+        if (currentUser.isAdmin) return true;
+        return currentUser.isAuthorized;
+    }
+    
+    function showConfirmModal(options) {
+        return new Promise((resolve) => {
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal-overlay';
+            modalDiv.innerHTML = `
+                <div class="modal-content">
+                    <h3>${options.title}</h3>
+                    <p style="margin-bottom: 10px;">${options.message}</p>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="dontAskAgainCheckbox">
+                        <label for="dontAskAgainCheckbox">Não perguntar novamente ao excluir ${options.type === 'member' ? 'membros' : 'eventos'}</label>
+                    </div>
+                    <div class="modal-buttons">
+                        <button id="modalCancelBtn" style="background:#E5E7EB; color:#0A0A2A;">Cancelar</button>
+                        <button id="modalConfirmBtn" style="background:#DC2626; color:white;">Excluir</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+            
+            const confirmBtn = modalDiv.querySelector('#modalConfirmBtn');
+            const cancelBtn = modalDiv.querySelector('#modalCancelBtn');
+            const dontAsk = modalDiv.querySelector('#dontAskAgainCheckbox');
+            const close = () => modalDiv.remove();
+            
+            confirmBtn.onclick = () => {
+                if (dontAsk.checked) {
+                    if (options.type === 'member') deletePreferences.member = true;
+                    else deletePreferences.event = true;
+                    saveDeletePreferences();
+                }
+                close();
+                resolve(true);
+            };
+            cancelBtn.onclick = () => { close(); resolve(false); };
+            modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) { close(); resolve(false); } });
+        });
+    }
+    
+    async function requestDelete(type, id, name) {
+        const prefKey = type === 'member' ? 'member' : 'event';
+        if (deletePreferences[prefKey]) return true;
+        return await showConfirmModal({
+            title: type === 'member' ? "Excluir Membro" : "Excluir Evento",
+            message: type === 'member' ? `Deseja excluir "${name}" da lista?` : `Deseja remover o evento "${name}"?`,
+            type: type
+        });
+    }
+    
     function showLoginModal() {
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal-overlay';
-        modalDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:2000;';
         modalDiv.innerHTML = `
-            <div style="background:white;border-radius:28px;max-width:350px;width:90%;padding:2rem;border-top:5px solid #FFA500;">
-                <h3 style="font-family:'Cormorant Garamond';margin-bottom:1rem;">Acesso Administrativo</h3>
-                <input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:12px;margin-bottom:12px;border-radius:40px;border:1px solid #FFE0B5;">
-                <input type="password" id="loginPassword" placeholder="Senha" style="width:100%;padding:12px;margin-bottom:12px;border-radius:40px;border:1px solid #FFE0B5;">
-                <button id="loginConfirm" style="width:100%;padding:12px;background:#FFA500;border:none;border-radius:40px;font-weight:600;">Entrar</button>
+            <div class="modal-content">
+                <h3><i class="fas fa-church"></i> Acesso ao Sistema</h3>
+                <input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:12px;margin-bottom:10px;border-radius:40px;">
+                <input type="password" id="loginPassword" placeholder="Senha" style="width:100%;padding:12px;margin-bottom:15px;border-radius:40px;">
+                <button id="loginConfirm" style="width:100%;padding:12px;background:#FFA500;border:none;border-radius:40px;">Entrar</button>
                 <button id="loginCancel" style="width:100%;padding:12px;margin-top:8px;background:#E5E7EB;border:none;border-radius:40px;">Cancelar</button>
+                <p style="font-size:0.7rem; text-align:center; margin-top:12px;">Dados compartilhados em nuvem</p>
             </div>
         `;
         document.body.appendChild(modalDiv);
@@ -448,34 +668,52 @@
             const password = passwordInput.value;
             
             if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-                currentUser = { email, isAdmin: true };
+                currentUser = { email, isAdmin: true, isAuthorized: true };
                 modalDiv.remove();
-                showToast("✅ Modo Administrador ativado! Você pode editar os dados.", "success");
-                document.getElementById('adminToggleBtn').innerHTML = '<i class="fas fa-unlock-alt"></i> Administradora';
-                document.getElementById('adminToggleBtn').classList.add('active');
-                document.getElementById('adminMembersPanel').style.display = 'block';
-                document.getElementById('adminEventsPanel').style.display = 'block';
+                updateUIForUser();
+                showToast("✅ Bem-vinda, Administradora! Você tem acesso total.", "success");
+                renderAll();
+            } else if (authorizedEmails.includes(email)) {
+                currentUser = { email, isAdmin: false, isAuthorized: true };
+                modalDiv.remove();
+                updateUIForUser();
+                showToast(`✅ Olá ${email}! Você tem permissão para editar.`, "success");
                 renderAll();
             } else {
-                showToast("❌ Email ou senha incorretos!", "error");
+                showToast("❌ Acesso negado! Email não autorizado ou senha incorreta.", "error");
             }
         };
         cancelBtn.onclick = () => modalDiv.remove();
     }
     
-    function logoutAdmin() {
+    function logout() {
         currentUser = null;
-        showToast("🔓 Modo de visualização ativado", "info");
-        document.getElementById('adminToggleBtn').innerHTML = '<i class="fas fa-lock"></i> Modo Administrador';
-        document.getElementById('adminToggleBtn').classList.remove('active');
-        document.getElementById('adminMembersPanel').style.display = 'none';
-        document.getElementById('adminEventsPanel').style.display = 'none';
+        updateUIForUser();
         renderAll();
+        showToast("🔓 Você saiu. Agora tem apenas acesso de visualização.", "info");
+    }
+    
+    function updateUIForUser() {
+        const canEditFlag = canEdit();
+        const btns = ['saveMemberBtn', 'saveEventBtn', 'addAuthEmailBtn'];
+        btns.forEach(id => { const btn = document.getElementById(id); if(btn) btn.disabled = !canEditFlag; });
+        const inputs = ['newMemberName', 'newMemberBirthday', 'newEventTitle', 'newEventDateTime'];
+        inputs.forEach(id => { const input = document.getElementById(id); if(input) input.disabled = !canEditFlag; });
+        const addCards = document.querySelectorAll('#addMemberCard, #addEventCard');
+        addCards.forEach(card => card.style.opacity = canEditFlag ? '1' : '0.6');
+        
+        const adminTabBtn = document.getElementById('adminTabBtn');
+        adminTabBtn.style.display = (currentUser && currentUser.isAdmin) ? 'flex' : 'none';
+        
+        document.getElementById('userEmailDisplay').innerHTML = currentUser ? currentUser.email : 'Não autenticado';
+        document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'block';
+        document.getElementById('logoutBtn').style.display = currentUser ? 'block' : 'none';
+        document.getElementById('adminBadge').style.display = (currentUser && currentUser.isAdmin) ? 'inline-block' : 'none';
     }
     
     // Renderizações
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     
     function getBirthdayMonthDay(birthdayISO) {
         if (!birthdayISO) return null;
@@ -510,7 +748,7 @@
                 <div class="day-card ${day.dateStr === hojeStr ? 'highlight' : ''}">
                     <div class="day-name">${weekDays[day.dayOfWeek]}</div>
                     <div class="day-date">${day.dateStr}</div>
-                    <div class="birthday-names">${day.birthdays.length ? '🎂 ' + day.birthdays.slice(0,2).join(', ') + (day.birthdays.length > 2 ? ` +${day.birthdays.length-2}` : '') : '—'}</div>
+                    <div class="birthday-names">${day.birthdays.length ? '🎂' + day.birthdays.slice(0,1).join('').substring(0,8) + (day.birthdays.length > 1 ? ` +${day.birthdays.length-1}` : '') : '—'}</div>
                 </div>
             `).join('');
         }
@@ -527,6 +765,7 @@
         
         const container = document.getElementById('monthsAccordion');
         if (!container) return;
+        const canEditFlag = canEdit();
         
         if (members.length === 0) {
             container.innerHTML = `<div class="empty-message"><i class="fas fa-users"></i> Nenhum membro cadastrado. Entre no modo administrador para adicionar.</div>`;
@@ -539,15 +778,15 @@
                 <div class="month-item">
                     <div class="month-header">
                         <span><i class="fas fa-calendar-alt"></i> ${monthName}</span>
-                        <span class="member-count">${monthMembers.length} aniversariante${monthMembers.length !== 1 ? 's' : ''}</span>
+                        <span class="member-count">${monthMembers.length}</span>
                     </div>
                     <div class="month-members" id="month-${idx}">
                         ${monthMembers.length ? monthMembers.map(m => `
                             <div class="member-row">
                                 <span><i class="fas fa-user"></i> ${escapeHtml(m.name)}</span>
-                                <span>Dia ${m.day} ${currentUser ? `<button class="delete-member" data-id="${m.id}" style="background:#FFEFEF; color:#DC2626; padding:4px 12px; border-radius:40px; border:none; margin-left:10px;">Excluir</button>` : ''}</span>
+                                <span>Dia ${m.day} ${canEditFlag ? `<button class="delete-member" data-id="${m.id}" data-name="${escapeHtml(m.name)}" style="background:#FFEFEF; color:#DC2626; padding:4px 10px; border-radius:40px; border:none; font-size:0.7rem;">Excluir</button>` : ''}</span>
                             </div>
-                        `).join('') : '<div style="padding:10px 0; color:#999;">Nenhum aniversariante</div>'}
+                        `).join('') : '<div style="padding:8px 0; color:#999;">Nenhum</div>'}
                     </div>
                 </div>
             `;
@@ -560,15 +799,18 @@
             });
         });
         
-        if (currentUser) {
+        if (canEditFlag) {
             document.querySelectorAll('.delete-member').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     const id = parseInt(btn.getAttribute('data-id'));
-                    if (confirm("Tem certeza que deseja excluir este membro?")) {
+                    const name = btn.getAttribute('data-name');
+                    const confirmed = await requestDelete('member', id, name);
+                    if (confirmed) {
                         members = members.filter(m => m.id !== id);
                         await saveToJSONBin();
                         renderAll();
+                        showToast(`🗑️ Membro "${name}" removido!`, "success");
                     }
                 });
             });
@@ -578,6 +820,7 @@
     function renderUpcomingEvents() {
         const container = document.getElementById('upcomingEventsList');
         if (!container) return;
+        const canEditFlag = canEdit();
         if (!events.length) { 
             container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-alt"></i> Nenhum evento agendado. Entre no modo administrador para adicionar.</div>';
             return; 
@@ -591,18 +834,21 @@
         }
         
         container.innerHTML = upcoming.map(ev => {
-            const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit' });
-            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>📅 ${dataFormat}</small></div>${currentUser ? `<button class="delete-event" data-id="${ev.id}" style="background:none; border:none; color:#DC2626; cursor:pointer;"><i class="fas fa-trash"></i></button>` : ''}</div>`;
+            const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+            return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>📅 ${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}" data-name="${escapeHtml(ev.title)}" style="background:none; border:none; color:#DC2626; font-size:1rem;"><i class="fas fa-trash"></i></button>` : ''}</div>`;
         }).join('');
         
-        if (currentUser) {
+        if (canEditFlag) {
             document.querySelectorAll('.delete-event').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const id = parseInt(btn.getAttribute('data-id'));
-                    if (confirm("Tem certeza que deseja excluir este evento?")) {
+                    const name = btn.getAttribute('data-name');
+                    const confirmed = await requestDelete('event', id, name);
+                    if (confirmed) {
                         events = events.filter(e => e.id !== id);
                         await saveToJSONBin();
                         renderAll();
+                        showToast(`🗑️ Evento "${name}" removido!`, "success");
                     }
                 });
             });
@@ -615,17 +861,21 @@
         calendarInstance = new FullCalendar.Calendar(el, {
             initialView: 'dayGridMonth', 
             locale: 'pt-br',
-            headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' },
-            buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana' },
+            headerToolbar: { left: 'prev,next', center: 'title', right: 'today' },
+            buttonText: { today: 'Hoje' },
             events: events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })),
             editable: false,
             height: "auto",
             eventClick: async (info) => {
-                if (currentUser && confirm(`Excluir evento "${info.event.title}"?`)) {
-                    const id = parseInt(info.event.id);
-                    events = events.filter(e => e.id !== id);
-                    await saveToJSONBin();
-                    renderAll();
+                if (canEdit()) {
+                    const confirmed = await requestDelete('event', parseInt(info.event.id), info.event.title);
+                    if (confirmed) {
+                        const id = parseInt(info.event.id);
+                        events = events.filter(e => e.id !== id);
+                        await saveToJSONBin();
+                        renderAll();
+                        showToast(`🗑️ Evento "${info.event.title}" removido!`, "success");
+                    }
                 }
             }
         });
@@ -639,6 +889,77 @@
                 calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
             }
         }
+    }
+    
+    function renderAuthorizedEmails() {
+        const container = document.getElementById('authorizedEmailsList');
+        if (!container) return;
+        if (authorizedEmails.length === 0) {
+            container.innerHTML = '<div class="empty-message">Nenhum email autorizado ainda.</div>';
+            return;
+        }
+        container.innerHTML = authorizedEmails.map(email => `
+            <div class="auth-item">
+                <span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>
+                <button class="remove-auth" data-email="${email}">Remover</button>
+            </div>
+        `).join('');
+        
+        document.querySelectorAll('.remove-auth').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const email = btn.getAttribute('data-email');
+                authorizedEmails = authorizedEmails.filter(e => e !== email);
+                await saveToJSONBin();
+                renderAuthorizedEmails();
+                if (currentUser && currentUser.email === email && !currentUser.isAdmin) logout();
+                showToast(`📧 ${email} removido da lista`, "info");
+            });
+        });
+    }
+    
+    async function addAuthorizedEmail(email) {
+        if (!currentUser?.isAdmin) { showToast("Apenas a administradora pode autorizar emails", "error"); return; }
+        const normalized = email.trim().toLowerCase();
+        if (!normalized || !normalized.includes('@')) { showToast("Email inválido", "error"); return; }
+        if (normalized === ADMIN_EMAIL) { showToast("Este é o email da administradora", "error"); return; }
+        if (authorizedEmails.includes(normalized)) { showToast("Email já autorizado", "error"); return; }
+        authorizedEmails.push(normalized);
+        await saveToJSONBin();
+        renderAuthorizedEmails();
+        showToast(`✅ ${normalized} agora pode editar os dados!`, "success");
+    }
+    
+    async function addMember() {
+        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return; }
+        const name = document.getElementById('newMemberName').value;
+        const birthday = document.getElementById('newMemberBirthday').value;
+        if (!name.trim()) { showToast("Digite o nome do membro", "error"); return; }
+        const newId = Date.now();
+        members.push({ id: newId, name: name.trim(), birthday: birthday || null });
+        await saveToJSONBin();
+        document.getElementById('newMemberName').value = '';
+        document.getElementById('newMemberBirthday').value = '';
+        await renderAll();
+        showToast(`✅ Membro "${name.trim()}" adicionado!`, "success");
+    }
+    
+    async function addEvent() {
+        if (!canEdit()) { showToast("Sem permissão para editar", "error"); return; }
+        const title = document.getElementById('newEventTitle').value;
+        const dateRaw = document.getElementById('newEventDateTime').value;
+        const color = document.getElementById('newEventColor').value;
+        if (!title.trim()) { showToast("Digite o título do evento", "error"); return; }
+        if (!dateRaw) { showToast("Selecione data e hora", "error"); return; }
+        let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
+        const valid = new Date(iso);
+        if (isNaN(valid.getTime())) { showToast("Data inválida", "error"); return; }
+        const newId = Date.now();
+        events.push({ id: newId, title: title.trim(), start: valid.toISOString(), color: color || "#FFA500" });
+        await saveToJSONBin();
+        document.getElementById('newEventTitle').value = '';
+        if (flatpickrInstance) flatpickrInstance.clear();
+        await renderAll();
+        showToast(`✅ Evento "${title.trim()}" adicionado!`, "success");
     }
     
     function escapeHtml(str) { 
@@ -657,59 +978,11 @@
         renderMembersByMonth();
         renderUpcomingEvents();
         refreshCalendar();
-    }
-    
-    async function addMember() {
-        const name = document.getElementById('newMemberName').value;
-        const birthday = document.getElementById('newMemberBirthday').value;
-        
-        if (!name.trim()) {
-            showToast("Digite o nome do membro", "error");
-            return;
-        }
-        
-        const newId = Date.now();
-        members.push({ id: newId, name: name.trim(), birthday: birthday || null });
-        await saveToJSONBin();
-        
-        document.getElementById('newMemberName').value = '';
-        document.getElementById('newMemberBirthday').value = '';
-        await renderAll();
-        showToast("✅ Membro adicionado com sucesso!", "success");
-    }
-    
-    async function addEvent() {
-        const title = document.getElementById('newEventTitle').value;
-        const dateRaw = document.getElementById('newEventDateTime').value;
-        const color = document.getElementById('newEventColor').value;
-        
-        if (!title.trim()) {
-            showToast("Digite o título do evento", "error");
-            return;
-        }
-        if (!dateRaw) {
-            showToast("Selecione data e hora", "error");
-            return;
-        }
-        
-        let iso = dateRaw.includes('T') ? dateRaw : `${dateRaw.split(' ')[0]}T${dateRaw.split(' ')[1]}:00`;
-        const valid = new Date(iso);
-        if (isNaN(valid.getTime())) {
-            showToast("Data inválida", "error");
-            return;
-        }
-        
-        const newId = Date.now();
-        events.push({ id: newId, title: title.trim(), start: valid.toISOString(), color: color || "#FFA500" });
-        await saveToJSONBin();
-        
-        document.getElementById('newEventTitle').value = '';
-        if (flatpickrInstance) flatpickrInstance.clear();
-        await renderAll();
-        showToast("✅ Evento adicionado com sucesso!", "success");
+        renderAuthorizedEmails();
     }
     
     async function init() {
+        loadDeletePreferences();
         await renderAll();
         initCalendar();
         
@@ -720,20 +993,20 @@
                 dateFormat: "Y-m-d H:i", 
                 time_24hr: true, 
                 locale: "pt", 
-                defaultHour: 19 
+                defaultHour: 19,
+                minuteIncrement: 15
             });
         }
         
-        document.getElementById('adminToggleBtn').onclick = () => {
-            if (currentUser) {
-                logoutAdmin();
-            } else {
-                showLoginModal();
-            }
-        };
-        
+        document.getElementById('loginBtn').onclick = showLoginModal;
+        document.getElementById('logoutBtn').onclick = logout;
         document.getElementById('saveMemberBtn').onclick = addMember;
         document.getElementById('saveEventBtn').onclick = addEvent;
+        document.getElementById('addAuthEmailBtn').onclick = () => {
+            const email = document.getElementById('newAuthEmail').value;
+            addAuthorizedEmail(email);
+            document.getElementById('newAuthEmail').value = '';
+        };
         
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -744,15 +1017,25 @@
                     c.classList.remove('active'); 
                     if(c.id === id) c.classList.add('active'); 
                 });
-                if (id === 'eventsTab' && calendarInstance) setTimeout(() => calendarInstance.updateSize(), 150);
+                if (id === 'eventsTab' && calendarInstance) setTimeout(() => calendarInstance.updateSize(), 100);
             });
         });
+        
+        updateUIForUser();
         
         setInterval(async () => {
             if (!currentUser) {
                 await renderAll();
             }
-        }, 30000);
+        }, 60000);
+    }
+    
+    // Aviso sobre configuração
+    if (JSONBIN_BIN_ID === "SEU_BIN_ID") {
+        console.warn("Configure seu JSONBin.io! Acesse https://jsonbin.io e crie sua conta.");
+        setTimeout(() => {
+            showToast("⚠️ Configure o JSONBin.io no código! Veja instruções no arquivo.", "info");
+        }, 1000);
     }
     
     init();
