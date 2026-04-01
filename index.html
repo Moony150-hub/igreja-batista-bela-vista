@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
@@ -66,7 +63,6 @@
             margin-top: 8px;
         }
 
-        /* Toast Notifications */
         .toast-notification {
             position: fixed;
             bottom: 20px;
@@ -84,18 +80,9 @@
             gap: 10px;
             max-width: 350px;
         }
-        .toast-notification.success {
-            background: #2c5f2d;
-            color: white;
-        }
-        .toast-notification.error {
-            background: #c62828;
-            color: white;
-        }
-        .toast-notification.info {
-            background: #FFA500;
-            color: #0A0A2A;
-        }
+        .toast-notification.success { background: #2c5f2d; color: white; }
+        .toast-notification.error { background: #c62828; color: white; }
+        .toast-notification.info { background: #FFA500; color: #0A0A2A; }
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -135,10 +122,7 @@
             font-size: 0.8rem;
             width: auto;
         }
-        .logout-btn {
-            background: #DC2626;
-            color: white;
-        }
+        .logout-btn { background: #DC2626; color: white; }
         .admin-badge {
             background: #FFA500;
             color: #0A0A2A;
@@ -156,10 +140,6 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        .share-link:hover {
-            background: #FFE0C0;
         }
         .sync-status {
             font-size: 0.7rem;
@@ -187,11 +167,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: 0.2s;
         }
-        .tab-btn i {
-            color: #FF8C00;
-        }
+        .tab-btn i { color: #FF8C00; }
         .tab-btn.active {
             background: white;
             color: #FF8C00;
@@ -203,9 +180,7 @@
             animation: fadeIn 0.3s ease;
             background: #FFFFFF;
         }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px);}
             to { opacity: 1; transform: translateY(0);}
@@ -228,10 +203,7 @@
             border-left: 4px solid #FFA500;
             padding-left: 16px;
         }
-        .card h3 i {
-            color: #FF8C00;
-            margin-right: 12px;
-        }
+        .card h3 i { color: #FF8C00; margin-right: 12px; }
 
         .admin-panel {
             background: linear-gradient(135deg, #FFF9F0, #FFF4E8);
@@ -240,9 +212,7 @@
             margin-bottom: 1.5rem;
             border: 1px solid #FFD9A5;
         }
-        .authorized-list {
-            margin-top: 12px;
-        }
+        .authorized-list { margin-top: 12px; }
         .auth-email-item {
             display: flex;
             justify-content: space-between;
@@ -268,20 +238,23 @@
             margin-top: 12px;
             flex-wrap: wrap;
         }
-        .add-email-form input {
-            flex: 1;
-            min-width: 180px;
-        }
-        .add-email-form button {
-            width: auto;
-            padding: 10px 20px;
-        }
+        .add-email-form input { flex: 1; min-width: 180px; }
+        .add-email-form button { width: auto; padding: 10px 20px; }
 
         .weekly-birthdays {
             background: linear-gradient(135deg, #FFF9F0 0%, #FFF4E8 100%);
             border-radius: 20px;
             padding: 1.2rem;
             margin-bottom: 1.5rem;
+        }
+        .weekly-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .week-days {
             display: grid;
@@ -295,9 +268,7 @@
             text-align: center;
             border: 1px solid #FFE0B5;
         }
-        .day-card.highlight {
-            background: linear-gradient(135deg, #FFD966, #FFB347);
-        }
+        .day-card.highlight { background: linear-gradient(135deg, #FFD966, #FFB347); }
         .day-name { font-weight: 700; font-size: 0.7rem; color: #FF8C00; }
         .day-date { font-size: 0.85rem; font-weight: 600; margin: 4px 0; }
         .birthday-names { font-size: 0.65rem; color: #4B5563; }
@@ -332,6 +303,12 @@
             justify-content: space-between;
             border-bottom: 1px solid #FFEFE0;
         }
+        .empty-message {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
         .form-group { margin-bottom: 1rem; }
         input, button {
             border-radius: 60px;
@@ -347,10 +324,7 @@
             cursor: pointer;
             width: 100%;
         }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
         .event-form-row {
             display: flex;
             flex-wrap: wrap;
@@ -394,19 +368,12 @@
             margin-bottom: 1rem;
             text-align: center;
         }
-        .login-modal input {
-            margin-bottom: 12px;
-        }
+        .login-modal input { margin-bottom: 12px; }
         .confirm-modal .checkbox-option {
             display: flex;
             align-items: center;
             gap: 10px;
             margin: 15px 0;
-        }
-        .confirm-modal .checkbox-option input {
-            width: 18px;
-            height: 18px;
-            margin: 0;
         }
         .modal-buttons {
             display: flex;
@@ -414,21 +381,13 @@
             justify-content: flex-end;
             margin-top: 1rem;
         }
-        .modal-buttons button {
-            width: auto;
-            padding: 10px 20px;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #FF8C00;
-        }
+        .modal-buttons button { width: auto; padding: 10px 20px; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="church-header">
-        <h1>Igreja Batista<br>em Bela Vista</h1>
+        <h1>Igreja Batista em Bela Vista</h1>
         <div class="verse">“Alegrei-me quando me disseram: Vamos à casa do Senhor”</div>
     </div>
 
@@ -438,7 +397,7 @@
             <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
             <button class="logout-btn" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Sair</button>
             <span id="adminBadge" class="admin-badge" style="display:none;">👑 Administradora</span>
-            <span id="syncStatus" class="sync-status"><i class="fas fa-cloud-upload-alt"></i> Sincronizado</span>
+            <span id="syncStatus" class="sync-status"><i class="fas fa-database"></i> Dados locais</span>
         </div>
         <div class="share-link" id="shareLinkBtn">
             <i class="fas fa-share-alt"></i> Compartilhar Link
@@ -481,7 +440,7 @@
             <div class="card" id="addEventCard">
                 <h3><i class="fas fa-calendar-plus"></i> Adicionar Evento</h3>
                 <div class="event-form-row">
-                    <div class="form-group"><label>Título</label><input type="text" id="eventTitle" placeholder="Ex: Culto"></div>
+                    <div class="form-group"><label>Título</label><input type="text" id="eventTitle" placeholder="Ex: Culto, Encontro, Batismo"></div>
                     <div class="form-group"><label>Data e Hora</label><input type="text" id="eventDateTime" placeholder="Selecione data/hora"></div>
                     <div class="form-group"><label>Cor</label><input type="color" id="eventColor" value="#FFA500"></div>
                     <button id="addEventBtn"><i class="fas fa-plus-circle"></i> Adicionar</button>
@@ -495,7 +454,7 @@
     <div id="adminTab" class="tab-content">
         <div class="card">
             <h3><i class="fas fa-user-shield"></i> Gerenciar Acessos</h3>
-            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados. Todos os dados são compartilhados em tempo real!</p>
+            <p style="margin-bottom: 1rem;">Adicione emails de pessoas autorizadas a editar os dados.</p>
             <div class="admin-panel">
                 <h4><i class="fas fa-envelope"></i> Emails Autorizados para Edição</h4>
                 <div id="authorizedEmailsList" class="authorized-list"></div>
@@ -510,36 +469,19 @@
                 🔐 <strong>Administradora:</strong> nascimentonerisamannda@gmail.com (senha: 152926)<br>
                 👑 Você tem acesso total e pode autorizar outros emails.<br>
                 📧 Emails autorizados podem <strong>adicionar, editar e excluir</strong> membros e eventos.<br>
-                🌐 <strong>TODOS os dados são compartilhados!</strong> Quando alguém adiciona um membro ou evento, TODOS veem em tempo real.<br>
+                💾 <strong>Dados salvos no seu navegador</strong> (localStorage).<br>
                 🔗 Use o botão "Compartilhar Link" para enviar o acesso.
+                </p>
+                <p style="margin-top: 10px; background: #FFF0E0; padding: 10px; border-radius: 16px;">
+                ⚠️ <strong>Importante:</strong> Os dados ficam salvos no navegador de cada pessoa. Para compartilhar os dados entre todos, é necessário configurar um banco de dados online (Firebase).
                 </p>
             </div>
         </div>
     </div>
-    <footer>Igreja Batista em Bela Vista • Dados compartilhados em tempo real com todos</footer>
+    <footer>Igreja Batista em Bela Vista • Dados salvos localmente</footer>
 </div>
 
 <script>
-    // ==================== CONFIGURAÇÃO FIREBASE ====================
-    const firebaseConfig = {
-        apiKey: "AIzaSyDEFAULT_PLACEHOLDER",
-        authDomain: "igreja-batista.firebaseapp.com",
-        databaseURL: "https://igreja-batista-default-rtdb.firebaseio.com",
-        projectId: "igreja-batista",
-        storageBucket: "igreja-batista.firebasestorage.app",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abcdef123456"
-    };
-    
-    let useFirebase = false;
-    if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyDEFAULT_PLACEHOLDER") {
-        try {
-            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-            window.database = firebase.database();
-            useFirebase = true;
-        } catch(e) { console.warn("Firebase não configurado"); }
-    }
-    
     // ==================== CONFIGURAÇÃO ====================
     const ADMIN_EMAIL = "nascimentonerisamannda@gmail.com";
     const ADMIN_PASSWORD = "152926";
@@ -553,14 +495,36 @@
     let flatpickrInstance = null;
     let deletePreferences = { member: false, event: false };
     
-    // Toast notification
-    function showToast(message, type = "info") {
-        const toast = document.createElement('div');
-        toast.className = `toast-notification ${type}`;
-        let icon = type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️";
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+    // Carregar dados salvos - SEM DADOS DE TESTE
+    function loadData() {
+        const storedMembers = localStorage.getItem('ibv_members');
+        const storedEvents = localStorage.getItem('ibv_events');
+        const storedAuth = localStorage.getItem('ibv_authorized');
+        
+        if (storedMembers) members = JSON.parse(storedMembers);
+        else members = []; // Começa vazio!
+        
+        if (storedEvents) events = JSON.parse(storedEvents);
+        else events = []; // Começa vazio!
+        
+        if (storedAuth) authorizedEmails = JSON.parse(storedAuth);
+        else authorizedEmails = [];
+        
+        // Salva para garantir que o localStorage está atualizado
+        saveData();
+    }
+    
+    function saveData() {
+        localStorage.setItem('ibv_members', JSON.stringify(members));
+        localStorage.setItem('ibv_events', JSON.stringify(events));
+        localStorage.setItem('ibv_authorized', JSON.stringify(authorizedEmails));
+        const statusEl = document.getElementById('syncStatus');
+        if (statusEl) {
+            statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Salvo';
+            setTimeout(() => {
+                statusEl.innerHTML = '<i class="fas fa-database"></i> Dados locais';
+            }, 1500);
+        }
     }
     
     function loadDeletePreferences() {
@@ -578,7 +542,14 @@
         localStorage.setItem(STORAGE_PREFERENCES, JSON.stringify(deletePreferences));
     }
     
-    // Modal de confirmação personalizado
+    function showToast(message, type = "info") {
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+    
     function showConfirmModal(options) {
         return new Promise((resolve) => {
             const modalDiv = document.createElement('div');
@@ -602,7 +573,6 @@
             const confirmBtn = modalDiv.querySelector('#modalConfirmBtn');
             const cancelBtn = modalDiv.querySelector('#modalCancelBtn');
             const dontAsk = modalDiv.querySelector('#dontAskAgainCheckbox');
-            
             const close = () => modalDiv.remove();
             
             confirmBtn.onclick = () => {
@@ -621,75 +591,12 @@
     
     async function requestDelete(type, id, name) {
         const prefKey = type === 'member' ? 'member' : 'event';
-        if (deletePreferences[prefKey]) {
-            return true;
-        }
-        const confirmed = await showConfirmModal({
+        if (deletePreferences[prefKey]) return true;
+        return await showConfirmModal({
             title: type === 'member' ? "Excluir Membro" : "Excluir Evento",
             message: type === 'member' ? `Deseja excluir "${name}" da lista de membros?` : `Deseja remover o evento "${name}"?`,
             type: type
         });
-        return confirmed;
-    }
-    
-    // ==================== FUNÇÕES DE BANCO DE DADOS ====================
-    async function loadDataFromFirebase() {
-        if (!useFirebase) return false;
-        try {
-            const membersSnapshot = await firebase.database().ref('members').once('value');
-            const eventsSnapshot = await firebase.database().ref('events').once('value');
-            const authSnapshot = await firebase.database().ref('authorizedEmails').once('value');
-            members = membersSnapshot.exists() ? membersSnapshot.val() : [];
-            events = eventsSnapshot.exists() ? eventsSnapshot.val() : [];
-            authorizedEmails = authSnapshot.exists() ? authSnapshot.val() : [];
-            if (members.length === 0 && events.length === 0) loadSampleData();
-            return true;
-        } catch(e) { return false; }
-    }
-    
-    function loadSampleData() {
-        members = [
-            { id: 1, name: "Ana Lúcia Mendes", birthday: "1975-05-20" },
-            { id: 2, name: "João Batista Silva", birthday: "1968-12-10" },
-            { id: 3, name: "Maria Clara Souza", birthday: "1995-03-25" },
-            { id: 4, name: "Rafael Oliveira", birthday: "2000-01-15" },
-            { id: 5, name: "Tereza Cristina", birthday: "1982-01-28" }
-        ];
-        const hoje = new Date();
-        events = [
-            { id: 100, title: "Culto de Louvor", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 5, 19, 0).toISOString(), color: "#FFA500" },
-            { id: 101, title: "Escola Dominical", start: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 2, 9, 0).toISOString(), color: "#FF8C00" }
-        ];
-        saveToFirebase();
-    }
-    
-    async function saveToFirebase() {
-        if (!useFirebase) return;
-        try {
-            await firebase.database().ref('members').set(members);
-            await firebase.database().ref('events').set(events);
-            await firebase.database().ref('authorizedEmails').set(authorizedEmails);
-            document.getElementById('syncStatus').innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Sincronizado';
-        } catch(e) { console.error("Erro ao salvar"); }
-    }
-    
-    async function loadAll() {
-        if (useFirebase) await loadDataFromFirebase();
-        else {
-            const storedMembers = localStorage.getItem('ibv_members_local');
-            const storedEvents = localStorage.getItem('ibv_events_local');
-            members = storedMembers ? JSON.parse(storedMembers) : [];
-            events = storedEvents ? JSON.parse(storedEvents) : [];
-            if (members.length === 0 && events.length === 0) loadSampleData();
-        }
-    }
-    
-    async function saveAll() {
-        if (useFirebase) await saveToFirebase();
-        else {
-            localStorage.setItem('ibv_members_local', JSON.stringify(members));
-            localStorage.setItem('ibv_events_local', JSON.stringify(events));
-        }
     }
     
     function canEdit() {
@@ -708,7 +615,7 @@
                 <input type="password" id="loginPassword" placeholder="Senha" autocomplete="current-password">
                 <button id="loginConfirmBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
                 <button id="loginCancelBtn" style="background:#E5E7EB; color:#0A0A2A; margin-top:8px;">Cancelar</button>
-                <p style="font-size:0.7rem; margin-top:12px; text-align:center;">Dados compartilhados em tempo real com todos</p>
+                <p style="font-size:0.7rem; margin-top:12px; text-align:center;">Dados salvos no seu navegador</p>
             </div>
         `;
         document.body.appendChild(modalDiv);
@@ -727,13 +634,13 @@
                 currentUser = { email, isAdmin: true, isAuthorized: true };
                 closeModal();
                 updateUIForUser();
-                await renderAll();
-                showToast("✅ Bem-vinda, Administradora! Todos os dados são compartilhados em tempo real.", "success");
+                renderAll();
+                showToast("✅ Bem-vinda, Administradora!", "success");
             } else if (authorizedEmails.includes(email)) {
                 currentUser = { email, isAdmin: false, isAuthorized: true };
                 closeModal();
                 updateUIForUser();
-                await renderAll();
+                renderAll();
                 showToast(`✅ Olá ${email}! Você tem permissão para editar.`, "success");
             } else {
                 showToast("❌ Acesso negado! Email não autorizado ou senha incorreta.", "error");
@@ -767,7 +674,7 @@
     
     function shareLink() {
         navigator.clipboard.writeText(window.location.href);
-        showToast("✅ Link copiado! Todos que acessarem verão os mesmos dados.", "success");
+        showToast("✅ Link copiado! Compartilhe com quem quiser.", "success");
     }
     
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -821,6 +728,14 @@
         const container = document.getElementById('monthsAccordion');
         if (!container) return;
         const canEditFlag = canEdit();
+        
+        const hasAnyMember = members.length > 0;
+        
+        if (!hasAnyMember) {
+            container.innerHTML = `<div class="empty-message"><i class="fas fa-users"></i> Nenhum membro cadastrado. Adicione o primeiro membro acima!</div>`;
+            return;
+        }
+        
         container.innerHTML = monthNames.map((monthName, idx) => {
             const monthMembers = membersByMonth[idx];
             return `
@@ -847,9 +762,6 @@
                 if (monthDiv) monthDiv.classList.toggle('open');
             });
         });
-        const mesAtual = new Date().getMonth();
-        const currentMonthDiv = document.getElementById(`month-${mesAtual}`);
-        if (currentMonthDiv) currentMonthDiv.classList.add('open');
         
         if (canEditFlag) {
             document.querySelectorAll('.delete-memb').forEach(btn => {
@@ -860,9 +772,9 @@
                     const confirmed = await requestDelete('member', id, name);
                     if (confirmed) {
                         members = members.filter(m => m.id !== id);
-                        await saveAll();
-                        await renderAll();
-                        showToast(`🗑️ Membro "${name}" removido com sucesso!`, "success");
+                        saveData();
+                        renderAll();
+                        showToast(`🗑️ Membro "${name}" removido!`, "success");
                     }
                 });
             });
@@ -873,16 +785,18 @@
         if (!canEdit()) { showToast("Sem permissão para editar", "error"); return false; }
         if (!name?.trim()) { showToast("Informe o nome do membro", "error"); return false; }
         members.push({ id: Date.now(), name: name.trim(), birthday: birthdayISO || null });
-        await saveAll();
-        await renderAll();
-        showToast(`✅ Membro "${name.trim()}" adicionado com sucesso!`, "success");
+        saveData();
+        renderAll();
+        showToast(`✅ Membro "${name.trim()}" adicionado!`, "success");
         return true;
     }
     
     function refreshCalendarAndList() {
         if (calendarInstance) {
             calendarInstance.removeAllEvents();
-            calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+            if (events.length > 0) {
+                calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+            }
         }
         renderUpcomingEvents();
     }
@@ -890,14 +804,24 @@
     function renderUpcomingEvents() {
         const container = document.getElementById('upcomingEventsList');
         if (!container) return;
-        if (!events.length) { container.innerHTML = '<p>Nenhum evento</p>'; return; }
+        if (!events.length) { 
+            container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-alt"></i> Nenhum evento agendado. Adicione o primeiro evento acima!</div>';
+            return; 
+        }
         const now = new Date();
         const upcoming = events.map(ev => ({ ...ev, startDate: new Date(ev.start) })).filter(ev => ev.startDate >= now).sort((a,b) => a.startDate - b.startDate);
         const canEditFlag = canEdit();
+        
+        if (upcoming.length === 0) {
+            container.innerHTML = '<div class="empty-message"><i class="fas fa-calendar-check"></i> Nenhum evento futuro agendado</div>';
+            return;
+        }
+        
         container.innerHTML = upcoming.map(ev => {
             const dataFormat = new Date(ev.start).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
             return `<div class="event-item"><div><strong>${escapeHtml(ev.title)}</strong><br><small>${dataFormat}</small></div>${canEditFlag ? `<button class="delete-event" data-id="${ev.id}" data-name="${escapeHtml(ev.title)}"><i class="fas fa-trash"></i></button>` : ''}</div>`;
         }).join('');
+        
         if (canEditFlag) {
             document.querySelectorAll('.delete-event').forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -906,9 +830,9 @@
                     const confirmed = await requestDelete('event', id, name);
                     if (confirmed) {
                         events = events.filter(e => e.id !== id);
-                        await saveAll();
-                        await renderAll();
-                        showToast(`🗑️ Evento "${name}" removido com sucesso!`, "success");
+                        saveData();
+                        renderAll();
+                        showToast(`🗑️ Evento "${name}" removido!`, "success");
                     }
                 });
             });
@@ -919,10 +843,11 @@
         const el = document.getElementById('calendar');
         if (calendarInstance) calendarInstance.destroy();
         calendarInstance = new FullCalendar.Calendar(el, {
-            initialView: 'dayGridMonth', locale: 'pt-br',
+            initialView: 'dayGridMonth', 
+            locale: 'pt-br',
             headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' },
             buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana' },
-            events: events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })),
+            events: events.length > 0 ? events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })) : [],
             editable: false,
             eventClick: async (info) => {
                 if (canEdit()) {
@@ -930,9 +855,9 @@
                     if (confirmed) {
                         const id = parseInt(info.event.id);
                         events = events.filter(e => e.id !== id);
-                        await saveAll();
-                        await renderAll();
-                        showToast(`🗑️ Evento "${info.event.title}" removido com sucesso!`, "success");
+                        saveData();
+                        renderAll();
+                        showToast(`🗑️ Evento "${info.event.title}" removido!`, "success");
                     }
                 }
             },
@@ -946,15 +871,19 @@
         if (!title?.trim()) { showToast("Título do evento é obrigatório", "error"); return false; }
         if (!dateTimeISO) { showToast("Selecione data e hora", "error"); return false; }
         events.push({ id: Date.now(), title: title.trim(), start: dateTimeISO, color: color || "#FFA500" });
-        await saveAll();
-        await renderAll();
-        showToast(`✅ Evento "${title.trim()}" adicionado com sucesso!`, "success");
+        saveData();
+        renderAll();
+        showToast(`✅ Evento "${title.trim()}" adicionado!`, "success");
         return true;
     }
     
     function renderAuthorizedEmails() {
         const container = document.getElementById('authorizedEmailsList');
         if (!container) return;
+        if (authorizedEmails.length === 0) {
+            container.innerHTML = '<div class="empty-message">Nenhum email autorizado ainda. Adicione o primeiro!</div>';
+            return;
+        }
         container.innerHTML = authorizedEmails.map(email => `
             <div class="auth-email-item">
                 <span><i class="fas fa-envelope"></i> ${escapeHtml(email)}</span>
@@ -965,10 +894,10 @@
             btn.addEventListener('click', async () => {
                 const email = btn.getAttribute('data-email');
                 authorizedEmails = authorizedEmails.filter(e => e !== email);
-                await saveAll();
+                saveData();
                 renderAuthorizedEmails();
                 if (currentUser && currentUser.email === email && !currentUser.isAdmin) logout();
-                showToast(`📧 ${email} foi removido da lista autorizada`, "info");
+                showToast(`📧 ${email} removido da lista`, "info");
             });
         });
     }
@@ -980,9 +909,9 @@
         if (normalized === ADMIN_EMAIL) { showToast("Este é o email da administradora", "error"); return; }
         if (authorizedEmails.includes(normalized)) { showToast("Email já autorizado", "error"); return; }
         authorizedEmails.push(normalized);
-        await saveAll();
+        saveData();
         renderAuthorizedEmails();
-        showToast(`✅ ${normalized} agora pode editar os dados!`, "success");
+        showToast(`✅ ${normalized} agora pode editar!`, "success");
     }
     
     async function renderAll() {
@@ -991,7 +920,9 @@
         renderUpcomingEvents();
         if (calendarInstance) {
             calendarInstance.removeAllEvents();
-            calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+            if (events.length > 0) {
+                calendarInstance.addEventSource(events.map(ev => ({ id: ev.id.toString(), title: ev.title, start: ev.start, color: ev.color || "#FFA500" })));
+            }
         }
         renderAuthorizedEmails();
     }
@@ -1000,9 +931,9 @@
     
     async function init() {
         loadDeletePreferences();
-        await loadAll();
+        loadData();
         initCalendar();
-        await renderAll();
+        renderAll();
         
         document.getElementById('loginBtn').onclick = showLoginModal;
         document.getElementById('logoutBtn').onclick = logout;
@@ -1048,10 +979,7 @@
         });
         
         updateUIForUser();
-        
-        if (!useFirebase) {
-            showToast("⚠️ Configure o Firebase para compartilhar dados entre todos os usuários!", "info");
-        }
+        showToast("✅ Sistema carregado! Comece adicionando seus membros e eventos.", "success");
     }
     
     init();
