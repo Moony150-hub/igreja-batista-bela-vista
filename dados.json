@@ -1,14 +1,5 @@
 {
-  "members": [
-    {"id": 1, "name": "Ana Lúcia Mendes", "birthday": "1975-05-20"},
-    {"id": 2, "name": "João Batista Silva", "birthday": "1968-12-10"},
-    {"id": 3, "name": "Maria Clara Souza", "birthday": "1995-03-25"},
-    {"id": 4, "name": "Rafael Oliveira", "birthday": "2000-01-15"},
-    {"id": 5, "name": "Tereza Cristina", "birthday": "1982-01-28"}
-  ],
-  "events": [
-    {"id": 100, "title": "Culto de Louvor", "start": "2024-12-20T19:00:00.000Z", "color": "#FFA500"},
-    {"id": 101, "title": "Escola Dominical", "start": "2024-12-15T09:00:00.000Z", "color": "#FF8C00"}
-  ],
+  "members": [],
+  "events": [],
   "authorizedEmails": []
 }
